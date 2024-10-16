@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraHandler : MonoBehaviour
 {
     [Header("Camera")]
-    public Camera camera;
+    public Camera cam;
     public Transform cameraPosition;
     public Transform orientation;
     public float sensitivity = 100f;
@@ -15,7 +15,8 @@ public class CameraHandler : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        camera = GetComponentInChildren<Camera>();
+
+        cam = GetComponentInChildren<Camera>();
     }
 
     private float yRotation; // horizontal
@@ -33,7 +34,7 @@ public class CameraHandler : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        camera.transform.eulerAngles = new Vector3(xRotation, yRotation, 0f);
+        cam.transform.eulerAngles = new Vector3(xRotation, yRotation, 0f);
         orientation.eulerAngles = new Vector3(0f, yRotation, 0f);
     }
 }
