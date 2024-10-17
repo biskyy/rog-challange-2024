@@ -620,7 +620,7 @@ MonoBehaviour:
   playerScale: 1
   playerDrag: 14
   crouchDrag: 20
-  dragSmoothMultiplier: 10
+  dragSmoothMultiplier: 8
   orientation: {fileID: 1965360236}
   speed: 8000
   slideForce: 1000
@@ -779,7 +779,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b0b4de3bd6e976e4f8b3adc6e72377ed, type: 2}
+  - {fileID: 2100000, guid: ec3eb1a1d5f61504190ae66512590463, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
