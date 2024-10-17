@@ -79,26 +79,26 @@ public class Movement : MonoBehaviour
 
     void HandleDrag()
     {
-        //if (crouching)
-        //{
-        //    rb.drag = Mathf.MoveTowards(rb.drag, crouchDrag, Time.deltaTime * dragSmoothMultiplier);
-        //}
-        //else
-        //{
+        if (crouching)
+        {
+            rb.drag = Mathf.MoveTowards(rb.drag, crouchDrag, Time.deltaTime * dragSmoothMultiplier);
+        }
+        else
+        {
             rb.drag = Mathf.MoveTowards(rb.drag, playerDrag, Time.deltaTime * dragSmoothMultiplier);
-        //}
+        }
     }
 
     void StartCrouch()
     {
         // this drag implementation has a logic flaw: you can gain momentum in any direction but you should only gain forward momentum
-        //if (rb.drag >= playerDrag)
-            //rb.drag = playerDrag / 1.5f; // TODO: apply this only if grounded
+        if (rb.drag >= playerDrag)
+            rb.drag = playerDrag / 1.5f; // TODO: apply this only if grounded
 
         // another implementation would be this, however for some reason whatever slide force i give
         // it, it will always slide for the same amount of time
-        if (rb.velocity.magnitude > 0.5f)
-            rb.AddForce(orientation.transform.forward * slideForce, ForceMode.Force);
+        //if (rb.velocity.magnitude > 0.5f)
+        //    rb.AddForce(orientation.transform.forward * slideForce, ForceMode.Force);
 
         transform.localScale = new Vector3(1f, playerScale / 2, 1f);
         transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);  
