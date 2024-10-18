@@ -11,6 +11,9 @@ TagManager:
   - 
   - Water
   - UI
+  - Player
+  - Ground
+  - Wall
   - 
   - 
   - 
@@ -34,9 +37,6 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - Glasses
   m_SortingLayers:
   - name: Default
     uniqueID: 0
