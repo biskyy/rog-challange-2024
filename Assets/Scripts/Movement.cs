@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class Movement : MonoBehaviour
-{
+public class Movement : MonoBehaviour {
     [Header("Player Properties")]
     public Vector3 playerScale = new Vector3(1, 1, 1);
     public float playerDrag = 14f;
@@ -18,14 +18,19 @@ public class Movement : MonoBehaviour
     public Transform orientation;
 
     [Header("Movement")]
-    public float speed = 100f;
+    public float speed = 8000f;
+    public float fallMultiplier = 3000f;
+
+    [Header("Jump")]
     public float jumpForce = 1000f;
+    public float airMultiplier = 0.48f;
 
     [Header("Others")]
     public Transform feet;
     public float groundHitDistance = 0.11f;
     public LayerMask groundLayer;
     public TextMeshProUGUI velocityText;
+    public float velocityUpdateTimeWindow = 1f;
 
     public bool grounded;
     public bool jumping;
@@ -33,29 +38,52 @@ public class Movement : MonoBehaviour
 
     float horizontalInput, verticalInput;
 
+    private Queue<Vector3> positions = new Queue<Vector3>();
+    private Queue<float> timestamps = new Queue<float>();
+
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         rb = GetComponentInChildren<Rigidbody>();
         rb.freezeRotation = true;
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         HandleInput();
         HandleDrag();
-        
-        velocityText.text = ((int)rb.velocity.magnitude).ToString();
+
+        CalculateAverageVelocity();
     }
 
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         HandleMovement();
     }
 
-    void HandleInput()
-    {
+    void CalculateAverageVelocity() { // made by chatgpt 4o
+        // Record the current position and time
+        positions.Enqueue(rb.position);
+        timestamps.Enqueue(Time.time);
+
+        // Remove old data points that are outside the time window
+        while (timestamps.Count > 0 && Time.time - timestamps.Peek() > velocityUpdateTimeWindow) {
+            positions.Dequeue();
+            timestamps.Dequeue();
+        }
+
+        // Calculate the displacement over the time window
+        if (positions.Count > 1) {
+            Vector3 displacement = rb.position - positions.Peek();
+            float timeElapsed = Time.time - timestamps.Peek();
+
+            // Calculate average velocity
+            Vector3 averageVelocity = displacement / timeElapsed;
+
+            // Debug log to see the result
+            velocityText.text = ((int) averageVelocity.magnitude).ToString();
+        }
+    }
+
+    void HandleInput() {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
@@ -71,13 +99,11 @@ public class Movement : MonoBehaviour
 
         // Handle crouching
         crouching = Input.GetKey(KeyCode.LeftShift);
-        
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
+
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
             StartCrouch();
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
+        if (Input.GetKeyUp(KeyCode.LeftShift)) {
             StopCrouch();
         }
 
@@ -85,34 +111,34 @@ public class Movement : MonoBehaviour
             rb.position = new Vector3(0, 1, 0);
     }
 
-    void HandleMovement()
-    {
+    void HandleMovement() {
+        if (rb.velocity.y < 0)
+            rb.AddForce(Vector3.down * fallMultiplier * Time.deltaTime);
 
-        rb.AddForce(orientation.transform.forward * verticalInput * speed * Time.deltaTime);
-        rb.AddForce(orientation.transform.right * horizontalInput * speed * Time.deltaTime);
+        if (grounded) {
+            rb.AddForce(orientation.transform.forward * verticalInput * speed * Time.deltaTime);
+            rb.AddForce(orientation.transform.right * horizontalInput * speed * Time.deltaTime);
+        } else {
+            rb.AddForce(orientation.transform.forward * verticalInput * speed * airMultiplier * Time.deltaTime);
+            rb.AddForce(orientation.transform.right * horizontalInput * speed * airMultiplier * Time.deltaTime);
+        }
     }
 
-    void HandleDrag()
-    {
-        if (!grounded || jumping)
+    void HandleDrag() {
+        if (!grounded)
+            //rb.drag = Mathf.MoveTowards(rb.drag, airDrag, Time.deltaTime * dragSmoothMultiplier);
             rb.drag = airDrag;
-        if (crouching)
-        {
+        else if (crouching)
             rb.drag = Mathf.MoveTowards(rb.drag, crouchDrag, Time.deltaTime * dragSmoothMultiplier);
-        }
         else
-        {
-            rb.drag = Mathf.MoveTowards(rb.drag, playerDrag, Time.deltaTime * dragSmoothMultiplier);
-        }
+            rb.drag = Mathf.MoveTowards(rb.drag, playerDrag, Time.deltaTime * dragSmoothMultiplier * 5f);
     }
 
-    void Jump()
-    {
+    void Jump() {
         rb.AddForce(rb.transform.up * jumpForce * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 
-    void StartCrouch()
-    {
+    void StartCrouch() {
         // this drag implementation has a logic flaw: you can gain momentum in any direction but you should only gain forward momentum
         if (rb.drag >= playerDrag)
             rb.drag = playerDrag / 1.5f; // TODO: apply this only if grounded
@@ -123,11 +149,10 @@ public class Movement : MonoBehaviour
         //    rb.AddForce(orientation.transform.forward * slideForce, ForceMode.Force);
 
         transform.localScale = new Vector3(playerScale.x, playerScale.y / 2, playerScale.z);
-        transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);  
+        transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
     }
 
-    void StopCrouch()
-    {
+    void StopCrouch() {
         transform.localScale = playerScale;
         transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
     }
