@@ -44,7 +44,11 @@ public class Movement : MonoBehaviour {
     public bool jumping;
     public bool crouching;
 
-    float horizontalInput, verticalInput;
+    public Vector3 moveDirection;
+    private float horizontalInput, verticalInput;
+    private Vector3 slopeMoveDirection;
+    private Vector3 groundNormal;
+
 
     private Queue<Vector3> positions = new Queue<Vector3>();
     private Queue<float> timestamps = new Queue<float>();
@@ -101,6 +105,8 @@ public class Movement : MonoBehaviour {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+
         // Handle jumping
         jumping = Input.GetKey(KeyCode.Space);
 
@@ -126,14 +132,11 @@ public class Movement : MonoBehaviour {
             rb.AddForce(Vector3.down * fallMultiplier * Time.deltaTime);
 
         if (grounded) {
-            rb.AddForce(orientation.transform.forward * verticalInput * speed * Time.deltaTime);
-            rb.AddForce(orientation.transform.right * horizontalInput * speed * Time.deltaTime);
+            rb.AddForce(moveDirection * speed * Time.deltaTime);
         } else if (crouching && !grounded) {
-            rb.AddForce(orientation.transform.forward * verticalInput * speed * crouchAirMultiplier * Time.deltaTime);
-            rb.AddForce(orientation.transform.right * horizontalInput * speed * crouchAirMultiplier * Time.deltaTime);
+            rb.AddForce(moveDirection * speed * crouchAirMultiplier * Time.deltaTime);
         } else {
-            rb.AddForce(orientation.transform.forward * verticalInput * speed * airMultiplier * Time.deltaTime);
-            rb.AddForce(orientation.transform.right * horizontalInput * speed * airMultiplier * Time.deltaTime);
+            rb.AddForce(moveDirection * speed * airMultiplier * Time.deltaTime);
         }
     }
 
@@ -180,5 +183,13 @@ public class Movement : MonoBehaviour {
     void StopCrouch() {
         transform.localScale = playerScale;
         transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+    }
+
+    private RaycastHit slopeHit;
+
+    void HandleSlopes() {
+        if (Physics.Raycast(feet.position, Vector3.down, out slopeHit, 0.12f)) {
+            groundNormal = slopeHit.normal;
+        }
     }
 }
