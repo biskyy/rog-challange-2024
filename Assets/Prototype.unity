@@ -488,7 +488,7 @@ MonoBehaviour:
   playerDrag: 14
   crouchDrag: 20
   airDrag: 7
-  dragSmoothMultiplier: 8000
+  dragSmoothMultiplier: 7000
   orientation: {fileID: 1965360236}
   speed: 8000
   moveSpeed: 8000
