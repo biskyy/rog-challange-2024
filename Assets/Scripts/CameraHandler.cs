@@ -22,7 +22,7 @@ public class CameraHandler : MonoBehaviour
     private float yRotation; // horizontal
     private float xRotation; // vertical
 
-    // Update is called once per frame
+    // update is called once per frame
     void Update()
     {
         transform.position = cameraPosition.position;
