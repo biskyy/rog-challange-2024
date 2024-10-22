@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour {
     public float playerDrag = 14f;
     public float crouchDrag = 20f;
     public float airDrag = 7f;
-    public float dragSmoothMultiplier = 8f;
+    public float dragSmoothMultiplier = 8000f;
     private Rigidbody rb;
 
     [Header("Camera")]
@@ -20,12 +20,14 @@ public class Movement : MonoBehaviour {
     [Header("Movement")]
     public float speed;
     public float moveSpeed = 8000f;
+
     public float fallMultiplier = 3000f;
+    public float airMultiplier = 0.52f;
+    public float crouchAirMultiplier = 0.2f;
 
     [Header("Jump")]
     public float jumpForce = 1000f;
-    public float airMultiplier = 0.48f;
-    public float crouchJumpMultiplier = 1.4f;
+    public float crouchJumpMultiplier = 0.65f;
 
     [Header("Crouch")]
     public float crouchTopSpeed = 13000f;
@@ -126,6 +128,9 @@ public class Movement : MonoBehaviour {
         if (grounded) {
             rb.AddForce(orientation.transform.forward * verticalInput * speed * Time.deltaTime);
             rb.AddForce(orientation.transform.right * horizontalInput * speed * Time.deltaTime);
+        } else if (crouching && !grounded) {
+            rb.AddForce(orientation.transform.forward * verticalInput * speed * crouchAirMultiplier * Time.deltaTime);
+            rb.AddForce(orientation.transform.right * horizontalInput * speed * crouchAirMultiplier * Time.deltaTime);
         } else {
             rb.AddForce(orientation.transform.forward * verticalInput * speed * airMultiplier * Time.deltaTime);
             rb.AddForce(orientation.transform.right * horizontalInput * speed * airMultiplier * Time.deltaTime);
@@ -133,12 +138,14 @@ public class Movement : MonoBehaviour {
     }
 
     void HandleDrag() {
-        if (!grounded && !crouching) {
+        if (!grounded) {
             speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
             rb.drag = airDrag;
         }
         else if (crouching) {
             speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
+            if (grounded) // if player crouches mid-air, reset the drag once he touches the ground
+                rb.drag = playerDrag;
         }
         else {
             speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
@@ -158,7 +165,8 @@ public class Movement : MonoBehaviour {
         //if (rb.drag >= playerDrag)
         //    rb.drag = playerDrag / 1.5f; // TODO: apply this only if grounded
 
-        speed = crouchTopSpeed;
+        if (grounded) // slide only if grounded
+            speed = crouchTopSpeed;
 
         // another implementation would be this, however for some reason whatever slide force i give
         // it, it will always slide for the same amount of time
