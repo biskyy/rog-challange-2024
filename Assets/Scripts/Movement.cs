@@ -18,12 +18,18 @@ public class Movement : MonoBehaviour {
     public Transform orientation;
 
     [Header("Movement")]
-    public float speed = 8000f;
+    public float speed;
+    public float moveSpeed = 8000f;
     public float fallMultiplier = 3000f;
 
     [Header("Jump")]
     public float jumpForce = 1000f;
     public float airMultiplier = 0.48f;
+    public float crouchJumpMultiplier = 1.4f;
+
+    [Header("Crouch")]
+    public float crouchTopSpeed = 13000f;
+    public float crouchSpeed = 5000f;
 
     [Header("Others")]
     public Transform feet;
@@ -45,6 +51,8 @@ public class Movement : MonoBehaviour {
     void Start() {
         rb = GetComponentInChildren<Rigidbody>();
         rb.freezeRotation = true;
+
+        speed = moveSpeed;
     }
 
     // Update is called once per frame
@@ -125,23 +133,32 @@ public class Movement : MonoBehaviour {
     }
 
     void HandleDrag() {
-        if (!grounded)
-            //rb.drag = Mathf.MoveTowards(rb.drag, airDrag, Time.deltaTime * dragSmoothMultiplier);
+        if (!grounded && !crouching) {
+            speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
             rb.drag = airDrag;
-        else if (crouching)
-            rb.drag = Mathf.MoveTowards(rb.drag, crouchDrag, Time.deltaTime * dragSmoothMultiplier);
-        else
-            rb.drag = Mathf.MoveTowards(rb.drag, playerDrag, Time.deltaTime * dragSmoothMultiplier * 5f);
+        }
+        else if (crouching) {
+            speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
+        }
+        else {
+            speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
+            rb.drag = playerDrag;
+        }
     }
 
     void Jump() {
-        rb.AddForce(rb.transform.up * jumpForce * Time.fixedDeltaTime, ForceMode.Impulse);
+        if (crouching)
+            rb.AddForce(rb.transform.up * jumpForce * crouchJumpMultiplier * Time.fixedDeltaTime, ForceMode.Impulse);
+        else
+            rb.AddForce(rb.transform.up * jumpForce * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 
     void StartCrouch() {
         // this drag implementation has a logic flaw: you can gain momentum in any direction but you should only gain forward momentum
-        if (rb.drag >= playerDrag)
-            rb.drag = playerDrag / 1.5f; // TODO: apply this only if grounded
+        //if (rb.drag >= playerDrag)
+        //    rb.drag = playerDrag / 1.5f; // TODO: apply this only if grounded
+
+        speed = crouchTopSpeed;
 
         // another implementation would be this, however for some reason whatever slide force i give
         // it, it will always slide for the same amount of time
