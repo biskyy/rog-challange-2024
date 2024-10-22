@@ -165,7 +165,7 @@ public class Movement : MonoBehaviour {
         //if (rb.drag >= playerDrag)
         //    rb.drag = playerDrag / 1.5f; // TODO: apply this only if grounded
 
-        if (grounded) // slide only if grounded
+        if (speed <= moveSpeed) // prevent spamming (not good detection, must be reworked)
             speed = crouchTopSpeed;
 
         // another implementation would be this, however for some reason whatever slide force i give
