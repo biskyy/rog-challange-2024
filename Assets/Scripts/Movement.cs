@@ -62,6 +62,10 @@ public class Movement : MonoBehaviour {
         HandleInput();
         HandleSpeedAndDrag();
 
+        //RaycastHit groundHit;
+        grounded = Physics.CheckSphere(feet.position, groundHitDistance, groundLayer);
+        //Debug.DrawLine(feet.position, groundHitDistance * feet.TransformDirection(Vector3.down), Color.red);
+
         CalculateAverageVelocity();
     }
 
@@ -96,10 +100,6 @@ public class Movement : MonoBehaviour {
     void HandleInput() {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-
-        RaycastHit groundHit;
-        grounded = Physics.Raycast(feet.position, feet.transform.TransformDirection(Vector3.down), out groundHit, groundHitDistance, groundLayer);
-        Debug.DrawRay(feet.position, feet.TransformDirection(Vector3.down) * groundHit.distance, Color.yellow);
 
         // Handle jumping
         jumping = Input.GetKey(KeyCode.Space);
