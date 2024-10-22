@@ -60,7 +60,7 @@ public class Movement : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         HandleInput();
-        HandleDrag();
+        HandleSpeedAndDrag();
 
         CalculateAverageVelocity();
     }
@@ -137,7 +137,7 @@ public class Movement : MonoBehaviour {
         }
     }
 
-    void HandleDrag() {
+    void HandleSpeedAndDrag() {
         if (!grounded) {
             speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
             rb.drag = airDrag;
