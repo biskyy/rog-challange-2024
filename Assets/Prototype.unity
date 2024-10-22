@@ -488,12 +488,17 @@ MonoBehaviour:
   playerDrag: 14
   crouchDrag: 20
   airDrag: 7
-  dragSmoothMultiplier: 8
+  dragSmoothMultiplier: 8000
   orientation: {fileID: 1965360236}
   speed: 8000
+  moveSpeed: 8000
   fallMultiplier: 3000
-  jumpForce: 1000
   airMultiplier: 0.52
+  crouchAirMultiplier: 0.2
+  jumpForce: 1000
+  crouchJumpMultiplier: 0.65
+  crouchTopSpeed: 13000
+  crouchSpeed: 5000
   feet: {fileID: 845353974}
   groundHitDistance: 0.11
   groundLayer:
