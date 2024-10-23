@@ -37,8 +37,6 @@ public class Movement : MonoBehaviour {
     public Transform feet;
     public Vector3 groundCheckBox = new Vector3(0.1f, 0.1f, 0.1f);
     public LayerMask groundLayer;
-    public TextMeshProUGUI velocityText;
-    public float velocityUpdateTimeWindow = 1f;
 
     public bool grounded;
     public bool jumping;
@@ -48,10 +46,6 @@ public class Movement : MonoBehaviour {
     private float horizontalInput, verticalInput;
     private Vector3 slopeMoveDirection;
     private Vector3 groundNormal;
-
-
-    private Queue<Vector3> positions = new Queue<Vector3>();
-    private Queue<float> timestamps = new Queue<float>();
 
     // Start is called before the first frame update
     void Start() {
@@ -69,36 +63,10 @@ public class Movement : MonoBehaviour {
 
         grounded = Physics.CheckBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down), groundLayer);
         AdvancedGizmosVisualizer.DisplayBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down)); // draw gizmos for ground check
-
-        CalculateAverageVelocity();
     }
 
     void FixedUpdate() {
         HandleMovement();
-    }
-
-    void CalculateAverageVelocity() { // made by chatgpt 4o
-        // Record the current position and time
-        positions.Enqueue(rb.position);
-        timestamps.Enqueue(Time.time);
-
-        // Remove old data points that are outside the time window
-        while (timestamps.Count > 0 && Time.time - timestamps.Peek() > velocityUpdateTimeWindow) {
-            positions.Dequeue();
-            timestamps.Dequeue();
-        }
-
-        // Calculate the displacement over the time window
-        if (positions.Count > 1) {
-            Vector3 displacement = rb.position - positions.Peek();
-            float timeElapsed = Time.time - timestamps.Peek();
-
-            // Calculate average velocity
-            Vector3 averageVelocity = displacement / timeElapsed;
-
-            // Debug log to see the result
-            velocityText.text = ((int) averageVelocity.magnitude).ToString();
-        }
     }
 
     void HandleInput() {
@@ -147,16 +115,14 @@ public class Movement : MonoBehaviour {
         if (!grounded) {
             speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
             rb.drag = airDrag;
-        }
-        else if (crouching) {
+        } else if (crouching) {
             if (!isOnSlope())
                 speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
             else
                 speed = Mathf.MoveTowards(speed, crouchTopSpeed, Time.deltaTime * dragSmoothMultiplier);
             if (grounded) // if player crouches mid-air, reset the drag once he touches the ground
                 rb.drag = playerDrag;
-        }
-        else {
+        } else {
             speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
             rb.drag = playerDrag;
         }
