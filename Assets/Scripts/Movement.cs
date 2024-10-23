@@ -18,6 +18,7 @@ public class Movement : MonoBehaviour {
     public Transform orientation;
 
     [Header("Movement")]
+    public Vector3 moveDirection;
     public float speed;
     public float moveSpeed = 8000f;
 
@@ -42,12 +43,11 @@ public class Movement : MonoBehaviour {
     public bool jumping;
     public bool crouching;
 
-    public Vector3 moveDirection;
     private float horizontalInput, verticalInput;
-    private Vector3 slopeMoveDirection;
+    public Vector3 slopeMoveDirection;
     private Vector3 groundNormal;
 
-    // Start is called before the first frame update
+    // s tart is called before the first frame update
     void Start() {
         rb = GetComponentInChildren<Rigidbody>();
         rb.freezeRotation = true;
@@ -55,7 +55,7 @@ public class Movement : MonoBehaviour {
         speed = moveSpeed;
     }
 
-    // Update is called once per frame
+    // update is called once per frame
     void Update() {
         HandleInput();
         HandleSpeedAndDrag();
@@ -76,13 +76,13 @@ public class Movement : MonoBehaviour {
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
         slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, groundNormal);
 
-        // Handle jumping
+        // handle jumping
         jumping = Input.GetKey(KeyCode.Space);
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
             Jump();
 
-        // Handle crouching
+        // handle crouching
         crouching = Input.GetKey(KeyCode.LeftShift);
 
         if (Input.GetKeyDown(KeyCode.LeftShift)) {
@@ -100,14 +100,12 @@ public class Movement : MonoBehaviour {
         if (rb.velocity.y < 0)
             rb.AddForce(Vector3.down * fallMultiplier * Time.deltaTime);
 
-        if (grounded && !isOnSlope()) {
-            rb.AddForce(moveDirection * speed * Time.deltaTime);
-        } else if (grounded && isOnSlope()) {
+        if (grounded) {
             rb.AddForce(slopeMoveDirection * speed * Time.deltaTime);
         } else if (crouching && !grounded) {
-            rb.AddForce(moveDirection * speed * crouchAirMultiplier * Time.deltaTime);
+            rb.AddForce(slopeMoveDirection * speed * crouchAirMultiplier * Time.deltaTime);
         } else {
-            rb.AddForce(moveDirection * speed * airMultiplier * Time.deltaTime);
+            rb.AddForce(slopeMoveDirection * speed * airMultiplier * Time.deltaTime);
         }
     }
 
@@ -118,8 +116,10 @@ public class Movement : MonoBehaviour {
         } else if (crouching) {
             if (!isOnSlope())
                 speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
-            else
-                speed = Mathf.MoveTowards(speed, crouchTopSpeed, Time.deltaTime * dragSmoothMultiplier);
+            else {
+                if (slopeMoveDirection != Vector3.zero)
+                speed = Mathf.MoveTowards(speed, speed + 1000f, Time.deltaTime * dragSmoothMultiplier);
+            }
             if (grounded) // if player crouches mid-air, reset the drag once he touches the ground
                 rb.drag = playerDrag;
         } else {
@@ -160,7 +160,7 @@ public class Movement : MonoBehaviour {
     private RaycastHit slopeHit;
 
     void HandleSlopes() {
-        Physics.Raycast(feet.position, Vector3.down, out slopeHit, 0.12f);
+        Physics.Raycast(feet.position, Vector3.down, out slopeHit, 0.2f);
         groundNormal = slopeHit.normal;
         print(groundNormal);
     }
@@ -171,9 +171,4 @@ public class Movement : MonoBehaviour {
         else
             return false;
     }
-
-    //private void OnDrawGizmosSelected() {
-    //    Gizmos.color = Color.red;
-    //    Gizmos.Draw(feet.position, groundHitDistance);
-    //}
 }
