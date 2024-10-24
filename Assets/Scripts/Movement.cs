@@ -97,7 +97,7 @@ public class Movement : MonoBehaviour {
     }
 
     void HandleMovement() {
-        if (rb.velocity.y < 0)
+        if (rb.velocity.y < 0 || GetSlopeMovementDirection() < 0)
             rb.AddForce(Vector3.down * fallMultiplier * Time.deltaTime);
 
         if (grounded) {
@@ -114,11 +114,14 @@ public class Movement : MonoBehaviour {
             speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
             rb.drag = airDrag;
         } else if (crouching) {
-            if (!isOnSlope())
+            if (!IsOnSlope())
                 speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
             else {
-                if (slopeMoveDirection != Vector3.zero)
-                speed = Mathf.MoveTowards(speed, speed + 1000f, Time.deltaTime * dragSmoothMultiplier);
+                if (slopeMoveDirection != Vector3.zero && GetSlopeMovementDirection() < 0) // make sure we are sliding down and not up
+                    speed = Mathf.MoveTowards(speed, speed + 1000f, Time.deltaTime * dragSmoothMultiplier);
+                else {
+                    speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
+                }
             }
             if (grounded) // if player crouches mid-air, reset the drag once he touches the ground
                 rb.drag = playerDrag;
@@ -140,7 +143,7 @@ public class Movement : MonoBehaviour {
         //if (rb.drag >= playerDrag)
         //    rb.drag = playerDrag / 1.5f; // TODO: apply this only if grounded
 
-        if (speed <= moveSpeed) // prevent spamming (not good detection, must be reworked)
+        if (speed <= moveSpeed && GetSlopeMovementDirection() <= 0) // prevent spamming (not good detection, must be reworked)
             speed = crouchTopSpeed;
 
         // another implementation would be this, however for some reason whatever slide force i give
@@ -160,15 +163,24 @@ public class Movement : MonoBehaviour {
     private RaycastHit slopeHit;
 
     void HandleSlopes() {
-        Physics.Raycast(feet.position, Vector3.down, out slopeHit, 0.2f);
+        Physics.Raycast(feet.position, Vector3.down, out slopeHit, 0.3f);
         groundNormal = slopeHit.normal;
         print(groundNormal);
     }
 
-    bool isOnSlope() {
+    bool IsOnSlope() {
         if (groundNormal != Vector3.up)
             return true;
         else
             return false;
     }
+
+    float GetSlopeMovementDirection() {
+        // calculate the movement direction on the slope
+        Vector3 projectedMovement = Vector3.ProjectOnPlane(moveDirection, groundNormal);
+
+        // return the dot product between the movement direction and the global up vector
+        return Vector3.Dot(projectedMovement, Vector3.up);
+    }
+
 }
