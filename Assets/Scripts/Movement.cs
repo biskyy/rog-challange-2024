@@ -18,6 +18,7 @@ public class Movement : MonoBehaviour {
     public Transform orientation;
 
     [Header("Movement")]
+    public Vector3 moveDirection;
     public float speed;
     public float moveSpeed = 8000f;
 
@@ -35,21 +36,18 @@ public class Movement : MonoBehaviour {
 
     [Header("Others")]
     public Transform feet;
-    public float groundHitDistance = 0.11f;
+    public Vector3 groundCheckBox = new Vector3(0.1f, 0.1f, 0.1f);
     public LayerMask groundLayer;
-    public TextMeshProUGUI velocityText;
-    public float velocityUpdateTimeWindow = 1f;
 
     public bool grounded;
     public bool jumping;
     public bool crouching;
 
-    float horizontalInput, verticalInput;
+    private float horizontalInput, verticalInput;
+    public Vector3 slopeMoveDirection;
+    private Vector3 groundNormal;
 
-    private Queue<Vector3> positions = new Queue<Vector3>();
-    private Queue<float> timestamps = new Queue<float>();
-
-    // Start is called before the first frame update
+    // s tart is called before the first frame update
     void Start() {
         rb = GetComponentInChildren<Rigidbody>();
         rb.freezeRotation = true;
@@ -57,57 +55,34 @@ public class Movement : MonoBehaviour {
         speed = moveSpeed;
     }
 
-    // Update is called once per frame
+    // update is called once per frame
     void Update() {
         HandleInput();
         HandleSpeedAndDrag();
+        HandleSlopes();
 
-        CalculateAverageVelocity();
+        grounded = Physics.CheckBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down), groundLayer);
+        AdvancedGizmosVisualizer.DisplayBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down)); // draw gizmos for ground check
     }
 
     void FixedUpdate() {
         HandleMovement();
     }
 
-    void CalculateAverageVelocity() { // made by chatgpt 4o
-        // Record the current position and time
-        positions.Enqueue(rb.position);
-        timestamps.Enqueue(Time.time);
-
-        // Remove old data points that are outside the time window
-        while (timestamps.Count > 0 && Time.time - timestamps.Peek() > velocityUpdateTimeWindow) {
-            positions.Dequeue();
-            timestamps.Dequeue();
-        }
-
-        // Calculate the displacement over the time window
-        if (positions.Count > 1) {
-            Vector3 displacement = rb.position - positions.Peek();
-            float timeElapsed = Time.time - timestamps.Peek();
-
-            // Calculate average velocity
-            Vector3 averageVelocity = displacement / timeElapsed;
-
-            // Debug log to see the result
-            velocityText.text = ((int) averageVelocity.magnitude).ToString();
-        }
-    }
-
     void HandleInput() {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
-        RaycastHit groundHit;
-        grounded = Physics.Raycast(feet.position, feet.transform.TransformDirection(Vector3.down), out groundHit, groundHitDistance, groundLayer);
-        Debug.DrawRay(feet.position, feet.TransformDirection(Vector3.down) * groundHit.distance, Color.yellow);
+        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, groundNormal);
 
-        // Handle jumping
+        // handle jumping
         jumping = Input.GetKey(KeyCode.Space);
 
         if (Input.GetKeyDown(KeyCode.Space) && grounded)
             Jump();
 
-        // Handle crouching
+        // handle crouching
         crouching = Input.GetKey(KeyCode.LeftShift);
 
         if (Input.GetKeyDown(KeyCode.LeftShift)) {
@@ -122,18 +97,15 @@ public class Movement : MonoBehaviour {
     }
 
     void HandleMovement() {
-        if (rb.velocity.y < 0)
+        if (rb.velocity.y < 0 || GetSlopeMovementDirection() < 0)
             rb.AddForce(Vector3.down * fallMultiplier * Time.deltaTime);
 
         if (grounded) {
-            rb.AddForce(orientation.transform.forward * verticalInput * speed * Time.deltaTime);
-            rb.AddForce(orientation.transform.right * horizontalInput * speed * Time.deltaTime);
+            rb.AddForce(slopeMoveDirection * speed * Time.deltaTime);
         } else if (crouching && !grounded) {
-            rb.AddForce(orientation.transform.forward * verticalInput * speed * crouchAirMultiplier * Time.deltaTime);
-            rb.AddForce(orientation.transform.right * horizontalInput * speed * crouchAirMultiplier * Time.deltaTime);
+            rb.AddForce(slopeMoveDirection * speed * crouchAirMultiplier * Time.deltaTime);
         } else {
-            rb.AddForce(orientation.transform.forward * verticalInput * speed * airMultiplier * Time.deltaTime);
-            rb.AddForce(orientation.transform.right * horizontalInput * speed * airMultiplier * Time.deltaTime);
+            rb.AddForce(slopeMoveDirection * speed * airMultiplier * Time.deltaTime);
         }
     }
 
@@ -141,13 +113,19 @@ public class Movement : MonoBehaviour {
         if (!grounded) {
             speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
             rb.drag = airDrag;
-        }
-        else if (crouching) {
-            speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
+        } else if (crouching) {
+            if (!IsOnSlope())
+                speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
+            else {
+                if (slopeMoveDirection != Vector3.zero && GetSlopeMovementDirection() < 0) // make sure we are sliding down and not up
+                    speed = Mathf.MoveTowards(speed, speed + 1000f, Time.deltaTime * dragSmoothMultiplier);
+                else {
+                    speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
+                }
+            }
             if (grounded) // if player crouches mid-air, reset the drag once he touches the ground
                 rb.drag = playerDrag;
-        }
-        else {
+        } else {
             speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
             rb.drag = playerDrag;
         }
@@ -165,7 +143,7 @@ public class Movement : MonoBehaviour {
         //if (rb.drag >= playerDrag)
         //    rb.drag = playerDrag / 1.5f; // TODO: apply this only if grounded
 
-        if (speed <= moveSpeed) // prevent spamming (not good detection, must be reworked)
+        if (speed <= moveSpeed && GetSlopeMovementDirection() <= 0) // prevent spamming (not good detection, must be reworked)
             speed = crouchTopSpeed;
 
         // another implementation would be this, however for some reason whatever slide force i give
@@ -181,4 +159,28 @@ public class Movement : MonoBehaviour {
         transform.localScale = playerScale;
         transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
     }
+
+    private RaycastHit slopeHit;
+
+    void HandleSlopes() {
+        Physics.Raycast(feet.position, Vector3.down, out slopeHit, 0.3f);
+        groundNormal = slopeHit.normal;
+        print(groundNormal);
+    }
+
+    bool IsOnSlope() {
+        if (groundNormal != Vector3.up)
+            return true;
+        else
+            return false;
+    }
+
+    float GetSlopeMovementDirection() {
+        // calculate the movement direction on the slope
+        Vector3 projectedMovement = Vector3.ProjectOnPlane(moveDirection, groundNormal);
+
+        // return the dot product between the movement direction and the global up vector
+        return Vector3.Dot(projectedMovement, Vector3.up);
+    }
+
 }
