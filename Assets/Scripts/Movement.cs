@@ -44,6 +44,8 @@ public class Movement : MonoBehaviour
   public bool jumping;
   public bool crouching;
 
+  public Transform[] objectsToNotGetScaledWhenCrouching;
+
   private float horizontalInput, verticalInput;
   public Vector3 slopeMoveDirection;
   private Vector3 groundNormal;
@@ -175,12 +177,21 @@ public class Movement : MonoBehaviour
     //    rb.AddForce(orientation.transform.forward * slideForce, ForceMode.Force);
 
     transform.localScale = new Vector3(playerScale.x, playerScale.y / 2, playerScale.z);
+    for (int i = 0; i < objectsToNotGetScaledWhenCrouching.Length; i++)
+    {
+      objectsToNotGetScaledWhenCrouching[i].localScale = new Vector3(objectsToNotGetScaledWhenCrouching[i].localScale.x, objectsToNotGetScaledWhenCrouching[i].localScale.y * 2, objectsToNotGetScaledWhenCrouching[i].localScale.z);
+    }
     transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+
   }
 
   void StopCrouch()
   {
     transform.localScale = playerScale;
+    for (int i = 0; i < objectsToNotGetScaledWhenCrouching.Length; i++)
+    {
+      objectsToNotGetScaledWhenCrouching[i].localScale = new Vector3(objectsToNotGetScaledWhenCrouching[i].localScale.x, objectsToNotGetScaledWhenCrouching[i].localScale.y / 2, objectsToNotGetScaledWhenCrouching[i].localScale.z);
+    }
     transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
   }
 
