@@ -7,6 +7,7 @@ public class CameraHandler : MonoBehaviour
   [Header("Camera")]
   public Camera cam;
   public Transform orientation;
+  public Transform yOrientation;
   public float sensitivity = 100f;
 
   // Start is called before the first frame update
@@ -32,6 +33,7 @@ public class CameraHandler : MonoBehaviour
     xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
     cam.transform.eulerAngles = new Vector3(xRotation, yRotation, 0f);
-    orientation.eulerAngles = new Vector3(0f, yRotation, 0f);
+    orientation.eulerAngles = new Vector3(xRotation, yRotation, 0f);
+    yOrientation.eulerAngles = new Vector3(0f, yRotation, 0f);
   }
 }

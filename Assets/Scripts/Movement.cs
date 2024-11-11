@@ -21,6 +21,8 @@ public class Movement : MonoBehaviour
   [Header("Camera")]
   public Transform orientation;
 
+  public Transform yOrientation;
+
   [Header("Movement")]
   public Vector3 moveDirection;
   public float speed;
@@ -70,7 +72,6 @@ public class Movement : MonoBehaviour
 
     grounded = Physics.CheckBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down), groundLayer);
     AdvancedGizmosVisualizer.DisplayBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down)); // draw gizmos for ground check
-
   }
 
   void LateUpdate()
@@ -87,7 +88,7 @@ public class Movement : MonoBehaviour
     horizontalInput = Input.GetAxisRaw("Horizontal");
     verticalInput = Input.GetAxisRaw("Vertical");
 
-    moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+    moveDirection = yOrientation.forward * verticalInput + yOrientation.right * horizontalInput;
     slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, groundNormal);
 
     // handle jumping

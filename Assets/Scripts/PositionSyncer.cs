@@ -7,6 +7,7 @@ public class PositionSyncer : MonoBehaviour
   public Transform cam;
   public Transform cameraPosition;
   public Transform orientation;
+  public Transform yOrientation;
   public Transform orientationPosition;
   public Transform feet;
   public Transform feetPosition;
@@ -22,6 +23,7 @@ public class PositionSyncer : MonoBehaviour
   {
     cam.position = cameraPosition.position;
     orientation.position = orientationPosition.position;
+    yOrientation.position = orientationPosition.position;
     feet.position = feetPosition.position;
   }
 }
