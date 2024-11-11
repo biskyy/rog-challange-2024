@@ -6,7 +6,6 @@ public class CameraHandler : MonoBehaviour
 {
   [Header("Camera")]
   public Camera cam;
-  public Transform cameraPosition;
   public Transform orientation;
   public float sensitivity = 100f;
 
@@ -25,8 +24,6 @@ public class CameraHandler : MonoBehaviour
   // update is called once per frame
   void Update()
   {
-    transform.position = cameraPosition.position;
-
     float mouseX = Input.GetAxis("Mouse X") * Time.fixedDeltaTime * sensitivity;
     float mouseY = Input.GetAxis("Mouse Y") * Time.fixedDeltaTime * sensitivity;
 
