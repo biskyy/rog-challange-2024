@@ -426,7 +426,7 @@ MonoBehaviour:
   dragSmoothMultiplier: 7000
   body: {fileID: 0}
   orientation: {fileID: 1965360236}
-  yOrientation: {fileID: 0}
+  yOrientation: {fileID: 1420223656}
   moveDirection: {x: 0, y: 0, z: 0}
   speed: 8000
   moveSpeed: 8000
@@ -1805,7 +1805,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611379868}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0.35}
   m_LocalScale: {x: 0.6, y: 0.2, z: 0.5}
   m_ConstrainProportionsScale: 0
@@ -2350,7 +2350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 963194227}
   orientation: {fileID: 1965360236}
-  yOrientation: {fileID: 0}
+  yOrientation: {fileID: 1420223656}
   sensitivity: 100
 --- !u!1 &1912256165
 GameObject:
