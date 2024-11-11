@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +14,8 @@ public class Movement : MonoBehaviour
   public float crouchDrag = 20f;
   public float airDrag = 7f;
   public float dragSmoothMultiplier = 8000f;
+
+  public Transform body;
   private Rigidbody rb;
 
   [Header("Camera")]
@@ -32,6 +35,7 @@ public class Movement : MonoBehaviour
   public float crouchJumpMultiplier = 0.65f;
 
   [Header("Crouch")]
+  public Vector3 crouchScale = new Vector3(1, 0.7f, 1);
   public float crouchTopSpeed = 13000f;
   public float crouchSpeed = 5000f;
 
@@ -44,8 +48,6 @@ public class Movement : MonoBehaviour
   public bool jumping;
   public bool crouching;
 
-  public Transform[] objectsToNotGetScaledWhenCrouching;
-
   private float horizontalInput, verticalInput;
   public Vector3 slopeMoveDirection;
   private Vector3 groundNormal;
@@ -53,7 +55,7 @@ public class Movement : MonoBehaviour
   // s tart is called before the first frame update
   void Start()
   {
-    rb = GetComponentInChildren<Rigidbody>();
+    rb = GetComponent<Rigidbody>();
     rb.freezeRotation = true;
 
     speed = moveSpeed;
@@ -68,6 +70,11 @@ public class Movement : MonoBehaviour
 
     grounded = Physics.CheckBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down), groundLayer);
     AdvancedGizmosVisualizer.DisplayBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down)); // draw gizmos for ground check
+
+  }
+
+  void LateUpdate()
+  {
   }
 
   void FixedUpdate()
@@ -102,7 +109,7 @@ public class Movement : MonoBehaviour
     }
 
     if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.R))
-      rb.position = new Vector3(0, 1, 0);
+      transform.position = new Vector3(0, 1, 0);
   }
 
   void HandleMovement()
@@ -176,23 +183,15 @@ public class Movement : MonoBehaviour
     //if (rb.velocity.magnitude > 0.5f)
     //    rb.AddForce(orientation.transform.forward * slideForce, ForceMode.Force);
 
-    transform.localScale = new Vector3(playerScale.x, playerScale.y / 2, playerScale.z);
-    for (int i = 0; i < objectsToNotGetScaledWhenCrouching.Length; i++)
-    {
-      objectsToNotGetScaledWhenCrouching[i].localScale = new Vector3(objectsToNotGetScaledWhenCrouching[i].localScale.x, objectsToNotGetScaledWhenCrouching[i].localScale.y * 2, objectsToNotGetScaledWhenCrouching[i].localScale.z);
-    }
-    transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+    body.localScale = crouchScale;
+    transform.position = new Vector3(transform.position.x, transform.position.y - (playerScale.y - crouchScale.y), transform.position.z);
 
   }
 
   void StopCrouch()
   {
-    transform.localScale = playerScale;
-    for (int i = 0; i < objectsToNotGetScaledWhenCrouching.Length; i++)
-    {
-      objectsToNotGetScaledWhenCrouching[i].localScale = new Vector3(objectsToNotGetScaledWhenCrouching[i].localScale.x, objectsToNotGetScaledWhenCrouching[i].localScale.y / 2, objectsToNotGetScaledWhenCrouching[i].localScale.z);
-    }
-    transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+    body.localScale = playerScale;
+    transform.position = new Vector3(transform.position.x, transform.position.y + (playerScale.y - crouchScale.y), transform.position.z);
   }
 
   private RaycastHit slopeHit;
