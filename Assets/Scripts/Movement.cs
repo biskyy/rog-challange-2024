@@ -186,13 +186,12 @@ public class Movement : MonoBehaviour
 
     body.localScale = crouchScale;
     transform.position = new Vector3(transform.position.x, transform.position.y - (playerScale.y - crouchScale.y), transform.position.z);
-
   }
 
   void StopCrouch()
   {
     body.localScale = playerScale;
-    transform.position = new Vector3(transform.position.x, transform.position.y + (playerScale.y - crouchScale.y), transform.position.z);
+    // transform.position = new Vector3(transform.position.x, transform.position.y + (playerScale.y - crouchScale.y + 0.25f), transform.position.z);
   }
 
   private RaycastHit slopeHit;
@@ -201,7 +200,6 @@ public class Movement : MonoBehaviour
   {
     Physics.Raycast(feet.position, Vector3.down, out slopeHit, 0.3f);
     groundNormal = slopeHit.normal;
-    print(groundNormal);
   }
 
   bool IsOnSlope()
