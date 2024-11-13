@@ -16,6 +16,7 @@ public class RedKatana : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    // animator.Play
+    if (Input.GetMouseButtonDown(1))
+      animator.SetTrigger("draw");
   }
 }
