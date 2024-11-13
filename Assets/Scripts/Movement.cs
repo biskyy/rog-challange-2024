@@ -185,13 +185,14 @@ public class Movement : MonoBehaviour
     //    rb.AddForce(orientation.transform.forward * slideForce, ForceMode.Force);
 
     body.localScale = crouchScale;
-    transform.position = new Vector3(transform.position.x, transform.position.y - (playerScale.y - crouchScale.y), transform.position.z);
+    rb.AddForce(Vector3.down * 10f, ForceMode.Impulse);
+    // transform.position = new Vector3(transform.position.x, transform.position.y - (playerScale.y - crouchScale.y), transform.position.z);
   }
 
   void StopCrouch()
   {
     body.localScale = playerScale;
-    // transform.position = new Vector3(transform.position.x, transform.position.y + (playerScale.y - crouchScale.y + 0.25f), transform.position.z);
+    // transform.position = new Vector3(transform.position.x, transform.position.y + (playerScale.y - crouchScale.y), transform.position.z);
   }
 
   private RaycastHit slopeHit;
