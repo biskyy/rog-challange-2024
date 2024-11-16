@@ -16,7 +16,17 @@ public class RedKatana : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    if (Input.GetMouseButtonDown(1))
+    if (Input.GetKeyDown(KeyCode.F))
       animator.SetTrigger("draw");
+    if (Input.GetMouseButtonDown(1))
+      animator.SetBool("parrying", true);
+    else if (Input.GetMouseButtonUp(1))
+      animator.SetBool("parrying", false);
+    if (Input.GetMouseButtonDown(0))
+    {
+      animator.SetTrigger("attacked");
+      animator.SetInteger("comboIndex", 1);
+      // animator.ResetTrigger("attacked");
+    }
   }
 }

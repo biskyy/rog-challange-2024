@@ -54,6 +54,8 @@ public class Movement : MonoBehaviour
   public Vector3 slopeMoveDirection;
   private Vector3 groundNormal;
 
+  public Animator katanaAnimator;
+
   // s tart is called before the first frame update
   void Start()
   {
@@ -187,12 +189,16 @@ public class Movement : MonoBehaviour
     body.localScale = crouchScale;
     rb.AddForce(Vector3.down * 10f, ForceMode.Impulse);
     // transform.position = new Vector3(transform.position.x, transform.position.y - (playerScale.y - crouchScale.y), transform.position.z);
+
+    katanaAnimator.SetBool("crouched", true);
   }
 
   void StopCrouch()
   {
     body.localScale = playerScale;
     // transform.position = new Vector3(transform.position.x, transform.position.y + (playerScale.y - crouchScale.y), transform.position.z);
+
+    katanaAnimator.SetBool("crouched", false);
   }
 
   private RaycastHit slopeHit;
