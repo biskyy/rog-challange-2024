@@ -54,6 +54,8 @@ public class Movement : MonoBehaviour
   public Vector3 slopeMoveDirection;
   private Vector3 groundNormal;
 
+  public Animator katanaAnimator;
+
   // s tart is called before the first frame update
   void Start()
   {
@@ -185,14 +187,18 @@ public class Movement : MonoBehaviour
     //    rb.AddForce(orientation.transform.forward * slideForce, ForceMode.Force);
 
     body.localScale = crouchScale;
-    transform.position = new Vector3(transform.position.x, transform.position.y - (playerScale.y - crouchScale.y), transform.position.z);
+    rb.AddForce(Vector3.down * 10f, ForceMode.Impulse);
+    // transform.position = new Vector3(transform.position.x, transform.position.y - (playerScale.y - crouchScale.y), transform.position.z);
 
+    katanaAnimator.SetBool("crouched", true);
   }
 
   void StopCrouch()
   {
     body.localScale = playerScale;
-    transform.position = new Vector3(transform.position.x, transform.position.y + (playerScale.y - crouchScale.y), transform.position.z);
+    // transform.position = new Vector3(transform.position.x, transform.position.y + (playerScale.y - crouchScale.y), transform.position.z);
+
+    katanaAnimator.SetBool("crouched", false);
   }
 
   private RaycastHit slopeHit;
@@ -201,7 +207,6 @@ public class Movement : MonoBehaviour
   {
     Physics.Raycast(feet.position, Vector3.down, out slopeHit, 0.3f);
     groundNormal = slopeHit.normal;
-    print(groundNormal);
   }
 
   bool IsOnSlope()
