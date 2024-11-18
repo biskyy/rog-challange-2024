@@ -354,7 +354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &561570712
 Transform:
   m_ObjectHideFlags: 0
@@ -429,6 +429,24 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &602680430 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8990947884689940835, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
+  m_PrefabInstance: {fileID: 4015531750238669395}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &602680432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602680430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87442cb85713312078a160802a158344, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  redKatana: {fileID: 1550087855}
 --- !u!1 &609968318
 GameObject:
   m_ObjectHideFlags: 0
@@ -1194,6 +1212,17 @@ Transform:
   - {fileID: 81566785}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1550087855 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3629044828990453896, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
+  m_PrefabInstance: {fileID: 4015531750238669395}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001c32e382ed8d29d92aaf883b5d14b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1675404011
 GameObject:
   m_ObjectHideFlags: 0
@@ -2174,6 +2203,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SilverKatana
       objectReference: {fileID: 0}
+    - target: {fileID: 4789837843081972145, guid: ddee7b897e2ad3748acef72b8132e897, type: 3}
+      propertyPath: m_TagString
+      value: EnemyWeapon
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030585849662353025, guid: ddee7b897e2ad3748acef72b8132e897, type: 3}
+      propertyPath: m_TagString
+      value: EnemyWeapon
+      objectReference: {fileID: 0}
     - target: {fileID: 5274626145981010699, guid: ddee7b897e2ad3748acef72b8132e897, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2214,7 +2251,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 813618062668658538, guid: ddee7b897e2ad3748acef72b8132e897, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2265,6 +2303,10 @@ PrefabInstance:
     - target: {fileID: 189902847106975314, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3629044828990453896, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
+      propertyPath: parryTimeFrame
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4304481596099429119, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
       propertyPath: velocityText
@@ -2317,7 +2359,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8990947884689940835, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 602680432}
   m_SourcePrefab: {fileID: 100100000, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
 --- !u!4 &4095969634207431575
 Transform:

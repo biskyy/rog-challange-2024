@@ -7,6 +7,9 @@ public class RedKatana : MonoBehaviour
 
   public Animator animator;
 
+  public float parryTimeFrame;
+  public bool enemyKatanaTouched;
+
   // Start is called before the first frame update
   void Start()
   {
@@ -19,14 +22,40 @@ public class RedKatana : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.F))
       animator.SetTrigger("draw");
     if (Input.GetMouseButtonDown(1))
-      animator.SetBool("parrying", true);
+      StartParry();
     else if (Input.GetMouseButtonUp(1))
-      animator.SetBool("parrying", false);
+      StopParry();
     if (Input.GetMouseButtonDown(0))
     {
       animator.SetTrigger("attacked");
       animator.SetInteger("comboIndex", 1);
       // animator.ResetTrigger("attacked");
     }
+
+    while (parryTimeFrame > 0)
+    {
+      parryTimeFrame -= Time.fixedDeltaTime;
+      // print(Time.fixedDeltaTime);
+      // print("inside parry");
+      if (enemyKatanaTouched)
+      {
+        print("parried");
+      }
+    }
+
   }
+
+  void StartParry()
+  {
+    animator.SetBool("parrying", true);
+    parryTimeFrame = 50f;
+  }
+
+  void StopParry()
+  {
+    animator.SetBool("parrying", false);
+    parryTimeFrame = 50f;
+    enemyKatanaTouched = false;
+  }
+
 }
