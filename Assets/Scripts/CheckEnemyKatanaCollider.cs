@@ -6,6 +6,7 @@ public class CheckEnemyKatanaCollider : MonoBehaviour
 {
 
   public RedKatana redKatana;
+  public Transform parryPoint;
   // Start is called before the first frame update
   void Start()
   {
@@ -18,12 +19,37 @@ public class CheckEnemyKatanaCollider : MonoBehaviour
 
   }
 
-  void OnTriggerEnter(Collider other)
+  void OnTriggerEnter(Collider collider)
   {
-    if (other.tag == "EnemyWeapon")
+    if (collider.tag == "EnemyWeapon")
     {
-      if (redKatana.animator.GetBool("parrying"))
-        redKatana.enemyKatanaTouched = true;
+      redKatana.enemyKatanaTouched = true;
+    }
+    //Vector3 collisionPoint = collider.ClosestPointOnBounds(transform.position);
+    //parryPoint.position = collisionPoint;
+  }
+  void OnTriggerExit(Collider collider)
+  {
+    if (collider.tag == "EnemyWeapon")
+    {
+      redKatana.enemyKatanaTouched = false;
     }
   }
+
+
+  //private void OnCollisionEnter(Collision collision)
+  //{
+  //  if (collision.gameObject.tag == "EnemyWeapon" && redKatana.animator.GetBool("parrying"))
+  //    redKatana.enemyKatanaTouched = true;
+
+  //  Vector3 collisionPoint = collision.contacts[0].point;
+  //  print(collisionPoint);
+  //  parryPoint.position = collisionPoint;
+  //}
+
+  //private void OnCollisionExit(Collision collision)
+  //{
+  //  if (collision.gameObject.tag == "EnemyWeapon" && redKatana.animator.GetBool("parrying"))
+  //    redKatana.enemyKatanaTouched = false;
+  //}
 }
