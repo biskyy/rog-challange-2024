@@ -26,7 +26,7 @@ public class RedKatana : MonoBehaviour
   // Start is called before the first frame update
   void Start()
   {
-    // Time.timeScale = 0.5f;
+     //Time.timeScale = 0.5f;
   }
 
   // Update is called once per frame
@@ -83,6 +83,8 @@ public class RedKatana : MonoBehaviour
       {
         print("parried");
         modifiedParryTimeWindow = intendedParryTimeWindow;
+
+        parryVFX.Stop();
         parryVFX.Play();
       }
     }
