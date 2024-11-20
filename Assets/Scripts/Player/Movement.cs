@@ -8,7 +8,10 @@ using UnityEngine.UIElements;
 
 public class Movement : MonoBehaviour
 {
-  [Header("Player Properties")]
+
+  public Player player;
+
+  [Header("Movement Properties")]
   public Vector3 playerScale = new Vector3(1, 1, 1);
   public float playerDrag = 14f;
   public float crouchDrag = 20f;
@@ -46,10 +49,6 @@ public class Movement : MonoBehaviour
   public Vector3 groundCheckBox = new Vector3(0.1f, 0.1f, 0.1f);
   public LayerMask groundLayer;
 
-  public bool grounded;
-  public bool jumping;
-  public bool crouching;
-
   private float horizontalInput, verticalInput;
   public Vector3 slopeMoveDirection;
   private Vector3 groundNormal;
@@ -59,6 +58,7 @@ public class Movement : MonoBehaviour
   // s tart is called before the first frame update
   void Start()
   {
+    player = GetComponent<Player>();
     rb = GetComponent<Rigidbody>();
     rb.freezeRotation = true;
 
@@ -68,11 +68,11 @@ public class Movement : MonoBehaviour
   // update is called once per frame
   void Update()
   {
-    HandleInput();
+    HandleMouseInput();
     HandleSpeedAndDrag();
     HandleSlopes();
 
-    grounded = Physics.CheckBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down), groundLayer);
+    player.grounded = Physics.CheckBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down), groundLayer);
     AdvancedGizmosVisualizer.DisplayBox(feet.position, groundCheckBox, Quaternion.Euler(Vector3.down)); // draw gizmos for ground check
   }
 
@@ -85,34 +85,13 @@ public class Movement : MonoBehaviour
     HandleMovement();
   }
 
-  void HandleInput()
+  void HandleMouseInput()
   {
     horizontalInput = Input.GetAxisRaw("Horizontal");
     verticalInput = Input.GetAxisRaw("Vertical");
 
     moveDirection = yOrientation.forward * verticalInput + yOrientation.right * horizontalInput;
     slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, groundNormal);
-
-    // handle jumping
-    jumping = Input.GetKey(KeyCode.Space);
-
-    if (Input.GetKeyDown(KeyCode.Space) && grounded)
-      Jump();
-
-    // handle crouching
-    crouching = Input.GetKey(KeyCode.LeftShift);
-
-    if (Input.GetKeyDown(KeyCode.LeftShift))
-    {
-      StartCrouch();
-    }
-    if (Input.GetKeyUp(KeyCode.LeftShift))
-    {
-      StopCrouch();
-    }
-
-    if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKey(KeyCode.R))
-      transform.position = new Vector3(0, 1, 0);
   }
 
   void HandleMovement()
@@ -120,11 +99,11 @@ public class Movement : MonoBehaviour
     if (rb.velocity.y < 0 || GetSlopeMovementDirection() < 0)
       rb.AddForce(Vector3.down * fallMultiplier * Time.deltaTime);
 
-    if (grounded)
+    if (player.grounded)
     {
       rb.AddForce(slopeMoveDirection * speed * Time.deltaTime);
     }
-    else if (crouching && !grounded)
+    else if (player.crouching && !player.grounded)
     {
       rb.AddForce(slopeMoveDirection * speed * crouchAirMultiplier * Time.deltaTime);
     }
@@ -136,12 +115,12 @@ public class Movement : MonoBehaviour
 
   void HandleSpeedAndDrag()
   {
-    if (!grounded)
+    if (!player.grounded)
     {
       speed = Mathf.MoveTowards(speed, moveSpeed, Time.deltaTime * dragSmoothMultiplier);
       rb.drag = airDrag;
     }
-    else if (crouching)
+    else if (player.crouching)
     {
       if (!IsOnSlope())
         speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
@@ -154,7 +133,7 @@ public class Movement : MonoBehaviour
           speed = Mathf.MoveTowards(speed, crouchSpeed, Time.deltaTime * dragSmoothMultiplier);
         }
       }
-      if (grounded) // if player crouches mid-air, reset the drag once he touches the ground
+      if (player.grounded) // if player crouches mid-air, reset the drag once he touches the ground
         rb.drag = playerDrag;
     }
     else
@@ -164,15 +143,15 @@ public class Movement : MonoBehaviour
     }
   }
 
-  void Jump()
+  public void Jump()
   {
-    if (crouching)
+    if (player.crouching)
       rb.AddForce(rb.transform.up * jumpForce * crouchJumpMultiplier * Time.fixedDeltaTime, ForceMode.Impulse);
     else
       rb.AddForce(rb.transform.up * jumpForce * Time.fixedDeltaTime, ForceMode.Impulse);
   }
 
-  void StartCrouch()
+  public void StartCrouch()
   {
     // this drag implementation has a logic flaw: you can gain momentum in any direction but you should only gain forward momentum
     //if (rb.drag >= playerDrag)
@@ -193,7 +172,7 @@ public class Movement : MonoBehaviour
     katanaAnimator.SetBool("crouched", true);
   }
 
-  void StopCrouch()
+  public void StopCrouch()
   {
     body.localScale = playerScale;
     // transform.position = new Vector3(transform.position.x, transform.position.y + (playerScale.y - crouchScale.y), transform.position.z);
@@ -209,7 +188,7 @@ public class Movement : MonoBehaviour
     groundNormal = slopeHit.normal;
   }
 
-  bool IsOnSlope()
+  public bool IsOnSlope()
   {
     if (groundNormal != Vector3.up)
       return true;
@@ -217,7 +196,7 @@ public class Movement : MonoBehaviour
       return false;
   }
 
-  float GetSlopeMovementDirection()
+  public float GetSlopeMovementDirection()
   {
     // calculate the movement direction on the slope
     Vector3 projectedMovement = Vector3.ProjectOnPlane(moveDirection, groundNormal);
