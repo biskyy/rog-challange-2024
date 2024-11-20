@@ -52,19 +52,48 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1731319475748338630, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
+      propertyPath: m_TagString
+      value: EnemyWeapon
+      objectReference: {fileID: 0}
     - target: {fileID: 2282822442945944822, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
       propertyPath: m_Name
-      value: Katana Variant
+      value: SilverKatana
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282822442945944822, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
+      propertyPath: m_TagString
+      value: EnemyWeapon
       objectReference: {fileID: 0}
     - target: {fileID: 7380633140297156947, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d8f8a62a32887f547b23a2e6af372351, type: 2}
+    - target: {fileID: 9175973077921311359, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.68081045
+      objectReference: {fileID: 0}
+    - target: {fileID: 9175973077921311359, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.73245966
+      objectReference: {fileID: 0}
+    - target: {fileID: 9175973077921311359, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9175973077921311359, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9175973077921311359, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 94.186
+      objectReference: {fileID: 0}
     - target: {fileID: 9181241040474799452, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 1ddc1d68427ef1d469e6305a2dd36b6a, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6240959526283911725, guid: b8c10361b84a9fad08e362d9cb29052b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
