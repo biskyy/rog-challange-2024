@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SilverKatana : MonoBehaviour
 {
+  public Player player;
+  public bool playerTouched = false;
   // Start is called before the first frame update
   void Start()
   {
@@ -13,6 +15,9 @@ public class SilverKatana : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-
+    if (playerTouched && !player.parrying)
+    {
+      player.TakeDamage(20f);
+    }
   }
 }
