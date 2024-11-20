@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,8 +8,10 @@ public class Player : MonoBehaviour
 {
   public float maxHealth = 100f;
   public float health = 100f;
+  public TextMeshProUGUI healthText;
 
   [Header("Combat")]
+  public RedKatana redKatana;
   public bool attacking = false;
   public bool parrying = false;
   public bool blocking = false;
@@ -23,12 +26,14 @@ public class Player : MonoBehaviour
   void Start()
   {
     movement = GetComponent<Movement>();
+    redKatana = GetComponentInChildren<RedKatana>();
   }
 
   // Update is called once per frame
   void Update()
   {
     HandleInput();
+    healthText.text = health.ToString();
   }
 
   void HandleInput()
