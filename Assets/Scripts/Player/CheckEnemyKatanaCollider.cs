@@ -28,6 +28,17 @@ public class CheckEnemyKatanaCollider : MonoBehaviour
     //Vector3 collisionPoint = collider.ClosestPointOnBounds(transform.position);
     //parryPoint.position = collisionPoint;
   }
+
+  void OnTriggerStay(Collider collider)
+  {
+    if (collider.tag == "EnemyWeapon")
+    {
+      redKatana.enemyKatanaTouched = true;
+    }
+    //Vector3 collisionPoint = collider.ClosestPointOnBounds(transform.position);
+    //parryPoint.position = collisionPoint;
+  }
+
   void OnTriggerExit(Collider collider)
   {
     if (collider.tag == "EnemyWeapon")
