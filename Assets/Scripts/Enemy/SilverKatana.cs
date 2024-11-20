@@ -6,6 +6,8 @@ public class SilverKatana : MonoBehaviour
 {
   public Player player;
   public bool playerTouched = false;
+
+  public float damage = 20f;
   // Start is called before the first frame update
   void Start()
   {
@@ -15,9 +17,5 @@ public class SilverKatana : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    if (playerTouched && !player.parrying)
-    {
-      player.TakeDamage(20f);
-    }
   }
 }
