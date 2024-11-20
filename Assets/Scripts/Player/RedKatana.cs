@@ -32,7 +32,7 @@ public class RedKatana : MonoBehaviour
   void Start()
   {
     player = GetComponentInParent<Player>();
-    //Time.timeScale = 0.5f;
+    Time.timeScale = 0.4f;
   }
 
   // Update is called once per frame
@@ -102,10 +102,13 @@ public class RedKatana : MonoBehaviour
       {
         print("parried");
         modifiedParryTimeWindow = intendedParryTimeWindow;
-        // parried = true;
+        StopCoroutine("ResetParried");
+        parried = true;
+        StartCoroutine(ResetParried());
         currentParryTimeWindow = 0f;
         parryResetTimer = 0f;
 
+        parryVFX.Clear();
         parryVFX.Stop();
         parryVFX.Play();
       }
@@ -113,8 +116,19 @@ public class RedKatana : MonoBehaviour
     else
     {
       player.parrying = false;
+      //StartCoroutine(ResetParried());
       // parried = false;
     }
   }
 
+  IEnumerator ResetParried()
+  {
+    yield return new WaitForSeconds(1f);
+    parried = false;
+  }
+
+  IEnumerator StopParryVFX()
+  {
+    yield return null;
+  }
 }
