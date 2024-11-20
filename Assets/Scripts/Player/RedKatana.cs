@@ -14,6 +14,9 @@ public class RedKatana : MonoBehaviour
   public float modifiedParryTimeWindow = 0.5f;
   public float currentParryTimeWindow = 0f;
 
+  public float originalParryResetTimer = 2f;
+  public float parryResetTimer = 0f;
+
   public GameObject bladeCollider;
 
   public bool parried;
@@ -45,9 +48,9 @@ public class RedKatana : MonoBehaviour
     {
       animator.SetTrigger("attacked");
       animator.SetInteger("comboIndex", 1);
-      // animator.ResetTrigger("attacked");
     }
 
+    HandleResetParryTimer();
     DecreaseParryTimeWindow();
 
     modifiedPTW.text = modifiedParryTimeWindow.ToString();
@@ -57,15 +60,14 @@ public class RedKatana : MonoBehaviour
 
   void StartParry()
   {
+    parryResetTimer = originalParryResetTimer;
+
     //bladeCollider.SetActive(true);
     player.blocking = true;
     animator.SetBool("parrying", true);
-    if (currentParryTimeWindow > 0)
-    {
-      modifiedParryTimeWindow /= 2f;
-    }
 
     currentParryTimeWindow = modifiedParryTimeWindow;
+    modifiedParryTimeWindow /= 2f;
   }
 
   void StopParry()
@@ -76,6 +78,18 @@ public class RedKatana : MonoBehaviour
     enemyKatanaTouched = false;
   }
 
+  void HandleResetParryTimer()
+  {
+    if (parryResetTimer > 0)
+    {
+      parryResetTimer -= Time.fixedDeltaTime;
+    }
+    if (parryResetTimer <= 0 && modifiedParryTimeWindow != intendedParryTimeWindow)
+    {
+      modifiedParryTimeWindow = intendedParryTimeWindow;
+    }
+  }
+
   void DecreaseParryTimeWindow()
   {
     if (currentParryTimeWindow > 0)
@@ -83,12 +97,14 @@ public class RedKatana : MonoBehaviour
       player.parrying = true;
       currentParryTimeWindow -= Time.fixedDeltaTime;
       currentParryTimeWindow = Mathf.Clamp(currentParryTimeWindow, 0, intendedParryTimeWindow);
-      // print(Time.fixedDeltaTime);
-      //print("inside parry");
+
       if (enemyKatanaTouched)
       {
         print("parried");
         modifiedParryTimeWindow = intendedParryTimeWindow;
+        // parried = true;
+        currentParryTimeWindow = 0f;
+        parryResetTimer = 0f;
 
         parryVFX.Stop();
         parryVFX.Play();
@@ -97,6 +113,7 @@ public class RedKatana : MonoBehaviour
     else
     {
       player.parrying = false;
+      // parried = false;
     }
   }
 
