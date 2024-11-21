@@ -13,6 +13,8 @@
 [Aa]ssets/Thirdparty/
 [Aa]ssets/TextMesh Pro/
 
+[Aa]ssets/Plugins/RealtimeCSG/
+
 .editorconfig
 .vsconfig
 .config/
