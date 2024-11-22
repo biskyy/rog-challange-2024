@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 71efdcd9335566029a5e77c080342a92
+guid: 2e50d240d4110a6ec95150bf3541c25c
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Asus Rog
+  - ROG LyonsType
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
