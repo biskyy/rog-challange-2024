@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2136433182636528731}
   - component: {fileID: 6426463906292130868}
   m_Layer: 5
-  m_Name: rog-text
+  m_Name: ROGText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
