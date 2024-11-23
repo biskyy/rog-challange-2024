@@ -169,6 +169,33 @@ MonoBehaviour:
   Version: 1
   owner: {fileID: 1052297001}
   helperSurfaces: []
+--- !u!1 &110557153 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3718371245222020591, guid: 548e64113de9f0e40bc23ee7b84099d6, type: 3}
+  m_PrefabInstance: {fileID: 2136123778}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &110557157
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110557153}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1354445856614592872, guid: 548e64113de9f0e40bc23ee7b84099d6, type: 3}
 --- !u!1 &786427773
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,7 +412,7 @@ GameObject:
   - component: {fileID: 1236525419}
   - component: {fileID: 1236525418}
   - component: {fileID: 1236525417}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -491,7 +518,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5495902117074765545, guid: 5337f3b9afcb14b48bc3e29cbb2b8f97, type: 3}
 --- !u!1001 &1704702732
@@ -670,17 +697,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Version: 3
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
-  m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
 --- !u!1001 &1990212100
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -690,8 +706,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 786427774}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 5337f3b9afcb14b48bc3e29cbb2b8f97, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.70832
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5337f3b9afcb14b48bc3e29cbb2b8f97, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.70832
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5337f3b9afcb14b48bc3e29cbb2b8f97, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.70832
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5337f3b9afcb14b48bc3e29cbb2b8f97, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 57.670002
+      value: 57.672
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5337f3b9afcb14b48bc3e29cbb2b8f97, type: 3}
       propertyPath: m_LocalPosition.y
@@ -699,7 +727,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5337f3b9afcb14b48bc3e29cbb2b8f97, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.940001
+      value: 12.942
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5337f3b9afcb14b48bc3e29cbb2b8f97, type: 3}
       propertyPath: m_LocalRotation.w
@@ -732,6 +760,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5337f3b9afcb14b48bc3e29cbb2b8f97, type: 3}
       propertyPath: m_Name
       value: samurai-house-new
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 5337f3b9afcb14b48bc3e29cbb2b8f97, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -806,6 +838,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3718371245222020591, guid: 548e64113de9f0e40bc23ee7b84099d6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 548e64113de9f0e40bc23ee7b84099d6, type: 3}
       propertyPath: m_Name
       value: sakura-tree
@@ -813,7 +849,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -3718371245222020591, guid: 548e64113de9f0e40bc23ee7b84099d6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 110557157}
   m_SourcePrefab: {fileID: 100100000, guid: 548e64113de9f0e40bc23ee7b84099d6, type: 3}
 --- !u!4 &2136123779 stripped
 Transform:
