@@ -32,7 +32,7 @@ public class RedKatana : MonoBehaviour
   void Start()
   {
     player = GetComponentInParent<Player>();
-    Time.timeScale = 0.4f;
+    //Time.timeScale = 0.4f;
   }
 
   // Update is called once per frame
