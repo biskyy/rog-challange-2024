@@ -8,6 +8,7 @@ public class TargetDummy : MonoBehaviour
   public Transform player;
   public Transform orientation;
   public float radiusCheck = 10f;
+  public Animator animator;
 
   // Start is called before the first frame update
   void Start()
@@ -19,8 +20,15 @@ public class TargetDummy : MonoBehaviour
   void Update()
   {
     bool playerNearby = Physics.CheckSphere(transform.position, radiusCheck, playerLayer);
-    print(playerNearby);
-    orientation.LookAt(player);
+    if (playerNearby)
+    {
+      animator.SetBool("enemySpotted", true);
+      orientation.LookAt(player);
+    }
+    else
+    {
+      animator.SetBool("enemySpotted", false);
+    }
   }
 
   private void OnDrawGizmos()
