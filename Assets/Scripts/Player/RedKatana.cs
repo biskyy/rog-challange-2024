@@ -40,8 +40,8 @@ public class RedKatana : MonoBehaviour
   {
     if (Input.GetKeyDown(KeyCode.F))
       animator.SetTrigger("draw");
-    if (Input.GetMouseButtonDown(1) && 
-      (animator.GetCurrentAnimatorStateInfo(0).IsName("Drawed") 
+    if (Input.GetMouseButtonDown(1) &&
+      (animator.GetCurrentAnimatorStateInfo(0).IsName("Drawed")
       || animator.GetNextAnimatorStateInfo(0).IsName("Drawed")
       || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1")
       || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1End")
