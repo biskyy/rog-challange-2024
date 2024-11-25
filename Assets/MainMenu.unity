@@ -404,7 +404,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 569437169}
-  - {fileID: 1897121747}
   - {fileID: 1729343008}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1056,11 +1055,6 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 8697655736432449327, guid: e4791e600a877db3597b66c149dabed3, type: 3}
   m_PrefabInstance: {fileID: 1383345520898271224}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &1897121747 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5374473691613573845, guid: e4791e600a877db3597b66c149dabed3, type: 3}
-  m_PrefabInstance: {fileID: 1383345520898271224}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1955983083 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5833918366841808766, guid: 13d096236a4e0b49cae9afcb78593639, type: 3}
@@ -1195,7 +1189,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 206053818}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 787570988067415344, guid: e4791e600a877db3597b66c149dabed3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1609,3 +1603,4 @@ SceneRoots:
   - {fileID: 206053818}
   - {fileID: 1030412181}
   - {fileID: 666741882}
+  - {fileID: 1383345520898271224}
