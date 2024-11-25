@@ -136,7 +136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6426463906292130868, guid: e917064a3f9eaebca9eae0b9bb42b26f, type: 3}
       propertyPath: m_text
-      value: Joc Realizat Pentru ROG 2024
+      value: Joc Realizat Pentru ROG Challange 2024
       objectReference: {fileID: 0}
     - target: {fileID: 6426463906292130868, guid: e917064a3f9eaebca9eae0b9bb42b26f, type: 3}
       propertyPath: m_fontSize
