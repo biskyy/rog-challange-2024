@@ -5,6 +5,9 @@ public class LevelManager : MonoBehaviour
 {
   public static LevelManager Instance { get; private set; }
 
+  public GameObject mainMenuUIToggle;
+  public Canvas settingsMenu;
+
   [Header("Scene Names")]
   public string prototypeScene = "Prototype";
   public string homeScene = "Level1";
@@ -54,5 +57,27 @@ public class LevelManager : MonoBehaviour
     {
       Debug.LogWarning("No more scenes to load. Consider looping or ending the game.");
     }
+  }
+
+  public void ShowSettings()
+  {
+    if (SceneManager.GetActiveScene().name == "MainMenu")
+    {
+      var canvasGroup = mainMenuUIToggle.GetComponent<CanvasGroup>();
+      canvasGroup.alpha = 0;
+      canvasGroup.interactable = false;
+    }
+    settingsMenu.gameObject.SetActive(true);
+  }
+
+  public void CloseSettings()
+  {
+    if (SceneManager.GetActiveScene().name == "MainMenu")
+    {
+      var canvasGroup = mainMenuUIToggle.GetComponent<CanvasGroup>();
+      canvasGroup.alpha = 1;
+      canvasGroup.interactable = true;
+    }
+    settingsMenu.gameObject.SetActive(false);
   }
 }
