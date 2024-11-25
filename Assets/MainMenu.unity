@@ -1056,8 +1056,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6426463906292130868, guid: e917064a3f9eaebca9eae0b9bb42b26f, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -6664158079532489398, guid: a00727709abc5c21785bfb8e3de75668, type: 2}
+    - target: {fileID: 6426463906292130868, guid: e917064a3f9eaebca9eae0b9bb42b26f, type: 3}
+      propertyPath: m_characterSpacing
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6426463906292130868, guid: e917064a3f9eaebca9eae0b9bb42b26f, type: 3}
       propertyPath: m_fontColor32.rgba
-      value: 436207615
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 8059165187412892404, guid: e917064a3f9eaebca9eae0b9bb42b26f, type: 3}
       propertyPath: m_Pivot.x
