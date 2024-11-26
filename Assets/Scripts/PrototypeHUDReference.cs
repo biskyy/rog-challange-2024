@@ -20,7 +20,6 @@ public class PrototypeHUDReference : MonoBehaviour
       return;
     }
     Instance = this;
-    DontDestroyOnLoad(gameObject); // Persist through scenes
   }
 
   // Start is called before the first frame update
