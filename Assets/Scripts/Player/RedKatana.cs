@@ -21,11 +21,6 @@ public class RedKatana : MonoBehaviour
 
   public bool parried;
 
-
-
-  public TextMeshProUGUI modifiedPTW;
-  public TextMeshProUGUI currentPTW;
-
   public ParticleSystem parryVFX;
 
   // Start is called before the first frame update
@@ -58,9 +53,6 @@ public class RedKatana : MonoBehaviour
     HandleResetParryTimer();
     DecreaseParryTimeWindow();
 
-    modifiedPTW.text = modifiedParryTimeWindow.ToString();
-    currentPTW.text = currentParryTimeWindow.ToString();
-
   }
 
   void StartParry()
@@ -87,7 +79,7 @@ public class RedKatana : MonoBehaviour
   {
     if (parryResetTimer > 0)
     {
-      parryResetTimer -= Time.fixedDeltaTime;
+      parryResetTimer -= Time.deltaTime;
     }
     if (parryResetTimer <= 0 && modifiedParryTimeWindow != intendedParryTimeWindow)
     {
@@ -100,7 +92,7 @@ public class RedKatana : MonoBehaviour
     if (currentParryTimeWindow > 0)
     {
       player.parrying = true;
-      currentParryTimeWindow -= Time.fixedDeltaTime;
+      currentParryTimeWindow -= Time.deltaTime;
       currentParryTimeWindow = Mathf.Clamp(currentParryTimeWindow, 0, intendedParryTimeWindow);
 
       if (enemyKatanaTouched)
