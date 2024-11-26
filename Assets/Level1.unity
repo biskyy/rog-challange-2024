@@ -414,7 +414,7 @@ MonoBehaviour:
     crezi ca esti gata poti sa te duci sa iti cumperi pc-ul iesind pe poarta --->'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
-  m_sharedMaterial: {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  m_sharedMaterial: {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -503,7 +503,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  - {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1081,7 +1081,7 @@ MonoBehaviour:
     <----'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
-  m_sharedMaterial: {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  m_sharedMaterial: {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1170,7 +1170,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  - {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1806,6 +1806,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea39722f06c24941b8df6e1fd4a25a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainMenuUIToggle: {fileID: 0}
+  settingsMenu: {fileID: 0}
   prototypeScene: Prototype
   homeScene: Level1
   level1Scene: Level1
@@ -2008,7 +2010,7 @@ MonoBehaviour:
   m_text: Tutorial
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
-  m_sharedMaterial: {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  m_sharedMaterial: {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2097,7 +2099,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  - {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2199,7 +2201,7 @@ MonoBehaviour:
     sa isi cumpere unul din republica gamerilor. that's it. gl hf
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
-  m_sharedMaterial: {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  m_sharedMaterial: {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2288,7 +2290,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  - {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2697,7 +2699,7 @@ MonoBehaviour:
   m_text: info
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
-  m_sharedMaterial: {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  m_sharedMaterial: {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2786,7 +2788,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  - {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3258,6 +3260,10 @@ PrefabInstance:
       propertyPath: healthText
       value: 
       objectReference: {fileID: 1599650214}
+    - target: {fileID: 7609737970953639047, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
+      propertyPath: PrototypeHUD
+      value: 
+      objectReference: {fileID: 4999118091914249918}
     - target: {fileID: 8664540460046641442, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 57.83
@@ -3910,7 +3916,7 @@ MonoBehaviour:
   m_text: info
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
-  m_sharedMaterial: {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  m_sharedMaterial: {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3999,7 +4005,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1790696210307265194, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
+  - {fileID: 4374932762595889156, guid: 44cd28e008e01bd49a372214f04f4820, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4720,6 +4726,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f2ef85541f86fc49a9836ba3fd932ed, type: 3}
+--- !u!223 &4999118091914249918 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 8747799692890323494, guid: 4f2ef85541f86fc49a9836ba3fd932ed, type: 3}
+  m_PrefabInstance: {fileID: 4999118091914249917}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5464666903869480257
 Transform:
   m_ObjectHideFlags: 0
