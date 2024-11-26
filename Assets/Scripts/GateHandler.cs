@@ -20,7 +20,7 @@ public class GateHandler : MonoBehaviour
   {
     if (other.tag == "player")
     {
-      LevelManager.Instance.GoToScene("Prototype");
+      LevelManager.Instance.GoToScene("Level2");
     }
   }
 }
