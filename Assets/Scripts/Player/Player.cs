@@ -8,7 +8,6 @@ public class Player : MonoBehaviour
 {
   public float maxHealth = 100f;
   public float health = 100f;
-  public TextMeshProUGUI healthText;
 
   [Header("Combat")]
   public RedKatana redKatana;
@@ -22,11 +21,22 @@ public class Player : MonoBehaviour
   public bool jumping;
   public bool crouching;
 
+  [Header("HUD")]
+  public Canvas PrototypeHUD;
+  public Canvas PlayerHUD;
+
+  [Header("UI")]
+  TextMeshProUGUI healthText;
+
   // Start is called before the first frame update
   void Start()
   {
     movement = GetComponent<Movement>();
     redKatana = GetComponentInChildren<RedKatana>();
+    if (PrototypeHUD)
+    {
+      healthText = PrototypeHUD.transform.Find("health").GetComponent<TextMeshProUGUI>();
+    }
   }
 
   // Update is called once per frame
