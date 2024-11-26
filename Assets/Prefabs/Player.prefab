@@ -113,7 +113,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   health: 100
-  healthText: {fileID: 0}
   redKatana: {fileID: 0}
   attacking: 0
   parrying: 0
@@ -122,6 +121,8 @@ MonoBehaviour:
   grounded: 0
   jumping: 0
   crouching: 0
+  PrototypeHUD: {fileID: 0}
+  PlayerHUD: {fileID: 0}
 --- !u!114 &7955064262485817691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,9 +174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4ab77be94b091a46add91c165f17644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 5799552037907119762}
   velocityUpdateInterval: 1
-  velocityText: {fileID: 0}
+  averageVelocity: 0
 --- !u!114 &4830112755093531950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +253,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4079595363942042447}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 9113406666742176785}
   - component: {fileID: 2196634132521976720}
   - component: {fileID: 5056855429952121720}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -490,7 +490,6 @@ GameObject:
   m_Component:
   - component: {fileID: 204687851887620078}
   - component: {fileID: 3436920931778097175}
-  - component: {fileID: 19341468345061135}
   m_Layer: 6
   m_Name: Weapon Camera
   m_TagString: MainCamera
@@ -564,14 +563,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &19341468345061135
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3880680625707831947}
-  m_Enabled: 1
 --- !u!1 &5461898137501976391
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,7 +637,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7292957607240264771}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FeetPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -677,7 +668,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 991672265298691614}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: OrientationPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -930,7 +921,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8957271910373850837}
   - component: {fileID: 3192033601246275184}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BodyTrigger
   m_TagString: player
   m_Icon: {fileID: 0}
