@@ -6,12 +6,17 @@ using UnityEngine.UIElements;
 
 public class AverageVelocityForRb : MonoBehaviour
 {
-  public Rigidbody rb;
+  private Rigidbody rb;
   public float velocityUpdateInterval = 1f;
-  public TextMeshProUGUI velocityText;
+  public float averageVelocity;
 
   private Queue<Vector3> positions = new Queue<Vector3>();
   private Queue<float> timestamps = new Queue<float>();
+
+  void Start()
+  {
+    rb = GetComponent<Rigidbody>();
+  }
 
   // Update is called once per frame
   void Update()
@@ -39,10 +44,10 @@ public class AverageVelocityForRb : MonoBehaviour
       float timeElapsed = Time.time - timestamps.Peek();
 
       // Calculate average velocity
-      Vector3 averageVelocity = displacement / timeElapsed;
+      Vector3 velocity = displacement / timeElapsed;
 
       // Debug log to see the result
-      velocityText.text = ((int)averageVelocity.magnitude).ToString();
+      averageVelocity = velocity.magnitude;
     }
   }
 }

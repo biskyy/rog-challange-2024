@@ -25,25 +25,18 @@ public class Player : MonoBehaviour
   public Canvas PrototypeHUD;
   public Canvas PlayerHUD;
 
-  [Header("UI")]
-  TextMeshProUGUI healthText;
-
   // Start is called before the first frame update
   void Start()
   {
     movement = GetComponent<Movement>();
     redKatana = GetComponentInChildren<RedKatana>();
-    if (PrototypeHUD)
-    {
-      healthText = PrototypeHUD.transform.Find("health").GetComponent<TextMeshProUGUI>();
-    }
   }
 
   // Update is called once per frame
   void Update()
   {
     HandleInput();
-    healthText.text = health.ToString();
+    UpdatePlayerHUD();
   }
 
   void HandleInput()
@@ -88,6 +81,17 @@ public class Player : MonoBehaviour
   public void GameOver()
   {
     print("game over");
+  }
+
+  public void UpdatePlayerHUD()
+  {
+    if (PrototypeHUD)
+    {
+      PrototypeHUDReference.Instance.healthText.text = health.ToString();
+      PrototypeHUDReference.Instance.velocityText.text = GetComponent<AverageVelocityForRb>().averageVelocity.ToString();
+      PrototypeHUDReference.Instance.modifiedPTW.text = redKatana.modifiedParryTimeWindow.ToString();
+      PrototypeHUDReference.Instance.currentPTW.text = redKatana.currentParryTimeWindow.ToString();
+    }
   }
 
 }
