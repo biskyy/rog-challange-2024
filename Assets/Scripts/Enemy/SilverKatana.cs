@@ -8,14 +8,35 @@ public class SilverKatana : MonoBehaviour
   public bool playerTouched = false;
 
   public float damage = 20f;
+
+  [Header("Other")]
+  public float knockback = 750f;
+  private Rigidbody rb;
+
   // Start is called before the first frame update
   void Start()
   {
-
+    rb = GetComponent<Rigidbody>();
   }
 
   // Update is called once per frame
   void Update()
   {
   }
+
+  public void TurnIntoRagdoll()
+  {
+    if (transform.parent != null)
+    {
+      rb.isKinematic = false;
+      Destroy(transform.parent.parent.GetComponent<Animator>());
+      transform.SetParent(null, true);
+    }
+  }
+
+  public void DestroyKatana()
+  {
+    Destroy(gameObject);
+  }
+
 }

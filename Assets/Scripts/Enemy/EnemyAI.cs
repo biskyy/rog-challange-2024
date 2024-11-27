@@ -4,51 +4,68 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+  [Header("Enemy")]
   public NavMeshAgent agent;
-
-  public Transform player;
-
-  public LayerMask whatIsGround, whatIsPlayer;
-
+  public Transform orientation;
   public float health;
+  public LayerMask whatIsGround, whatIsPlayer;
+  public SilverKatana katana;
+  public Animator enemyKatanaAnimator;
 
-  //Patroling
+  [Header("Patroling")]
   public Vector3 walkPoint;
-  bool walkPointSet;
   public float walkPointRange;
+  public float timeBetweenWalkpoints;
+  bool walkPointSet;
 
-  //Attacking
+  [Header("Attacking")]
   public float timeBetweenAttacks;
-  bool alreadyAttacked;
-  public GameObject projectile;
-
-  //States
   public float sightRange, attackRange;
-  public bool playerInSightRange, playerInAttackRange;
+  bool alreadyAttacked;
+
+  [Header("States")]
+  public bool playerInSightRange;
+  public bool playerInAttackRange;
+  public bool isDead;
+
+  [Header("Other")]
+  public float destroyEnemyDelay = 20f;
+  public Player player;
+  private Transform playerCamPosition;
+  public ParticleSystem bloodVFX;
 
   private void Awake()
   {
-    player = GameObject.Find("PlayerObj").transform;
     agent = GetComponent<NavMeshAgent>();
+    enemyKatanaAnimator = GetComponentInChildren<Animator>();
+    playerCamPosition = player.GetComponent<PositionSyncer>().cameraPosition;
   }
 
   private void Update()
   {
-    //Check for sight and attack range
-    playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
-    playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+    if (!isDead)
+    {
+      //Check for sight and attack range
+      playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
+      playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-    if (!playerInSightRange && !playerInAttackRange) Patroling();
-    if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-    if (playerInAttackRange && playerInSightRange) AttackPlayer();
+      if (!playerInSightRange && !playerInAttackRange) Patroling();
+      if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+      if (playerInAttackRange && playerInSightRange) AttackPlayer();
+      transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+    }
   }
 
   private void Patroling()
   {
-    if (!walkPointSet) SearchWalkPoint();
+    enemyKatanaAnimator.SetBool("enemySpotted", false);
+    agent.isStopped = false;
+    if (!walkPointSet) Invoke(nameof(SearchWalkPoint), timeBetweenWalkpoints);
 
     if (walkPointSet)
+    {
       agent.SetDestination(walkPoint);
+    }
 
     Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
@@ -70,22 +87,25 @@ public class EnemyAI : MonoBehaviour
 
   private void ChasePlayer()
   {
-    agent.SetDestination(player.position);
+    enemyKatanaAnimator.SetBool("enemySpotted", true);
+    orientation.LookAt(playerCamPosition);
+    agent.isStopped = false;
+    agent.SetDestination(player.transform.position);
   }
 
   private void AttackPlayer()
   {
     //Make sure enemy doesn't move
-    agent.SetDestination(transform.position);
+    agent.isStopped = true;
 
-    transform.LookAt(player);
+    orientation.LookAt(playerCamPosition.position);
 
     if (!alreadyAttacked)
     {
       ///Attack code here
-      Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-      rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-      rb.AddForce(transform.up * 8f, ForceMode.Impulse);
+
+      enemyKatanaAnimator.SetTrigger("attacked");
+
       ///End of attack code
 
       alreadyAttacked = true;
@@ -97,13 +117,25 @@ public class EnemyAI : MonoBehaviour
     alreadyAttacked = false;
   }
 
-  public void TakeDamage(int damage)
+  public void TakeDamage(float damage)
   {
     health -= damage;
 
-    if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+    if (health == 0)
+    {
+      isDead = true;
+      gameObject.GetComponent<Rigidbody>().freezeRotation = false;
+      gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+      gameObject.GetComponent<Rigidbody>().AddForce(orientation.forward * -1 * 100f);
+      Destroy(agent);
+      Invoke(nameof(DestroyEnemy), destroyEnemyDelay);
+      katana.Invoke("DestroyKatana", destroyEnemyDelay);
+      katana.TurnIntoRagdoll();
+      player.AddHealth(20f);
+    }
   }
-  private void DestroyEnemy()
+
+  public void DestroyEnemy()
   {
     Destroy(gameObject);
   }
