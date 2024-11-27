@@ -22,6 +22,7 @@ public class RedKatana : MonoBehaviour
   public bool parried;
 
   public ParticleSystem parryVFX;
+  public ParticleSystem trailVFX;
 
   // Start is called before the first frame update
   void Start()
@@ -97,13 +98,12 @@ public class RedKatana : MonoBehaviour
 
       if (enemyKatanaTouched)
       {
-        print("parried");
         modifiedParryTimeWindow = intendedParryTimeWindow;
-        StopCoroutine("ResetParried");
-        parried = true;
-        StartCoroutine(ResetParried());
-        currentParryTimeWindow = 0f;
         parryResetTimer = 0f;
+        currentParryTimeWindow = 0f;
+
+        print("parried");
+        player.canTakeDamage = false;
 
         parryVFX.Clear();
         parryVFX.Stop();

@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
   public bool attacking = false;
   public bool parrying = false;
   public bool blocking = false;
+  public bool canTakeDamage = true;
 
   [Header("Movement")]
   public Movement movement;
@@ -65,7 +66,11 @@ public class Player : MonoBehaviour
 
   public void TakeDamage(float damage)
   {
-    health -= damage;
+    if (canTakeDamage && !blocking)
+      health -= damage;
+    else if (canTakeDamage && blocking)
+      health -= damage / 2f;
+    canTakeDamage = true;
   }
 
   public void AddHealth(float amount)

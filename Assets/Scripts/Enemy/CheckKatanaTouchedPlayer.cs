@@ -7,8 +7,6 @@ public class CheckKatanaTouchedPlayer : MonoBehaviour
 {
   public SilverKatana silverKatana;
   public Player player;
-  public bool playerDidAnythingToStopAttack = false;
-  public bool playerParried = false;
 
   // Start is called before the first frame update
   void Start()
@@ -29,12 +27,6 @@ public class CheckKatanaTouchedPlayer : MonoBehaviour
       silverKatana.playerTouched = true;
       player = collider.GetComponentInParent<Player>();
       silverKatana.player = player;
-
-      if (player.blocking)
-        playerDidAnythingToStopAttack = true;
-      if (player.redKatana.parried)
-        playerParried = true;
-      print(collider);
     }
   }
 
@@ -42,10 +34,7 @@ public class CheckKatanaTouchedPlayer : MonoBehaviour
   {
     if (collider.tag == "player")
     {
-      if (player.blocking)
-        playerDidAnythingToStopAttack = true;
-      if (player.redKatana.parried)
-        playerParried = true;
+
     }
   }
 
@@ -54,21 +43,7 @@ public class CheckKatanaTouchedPlayer : MonoBehaviour
   {
     if (collider.tag == "player")
     {
-
-      if (player.blocking)
-        playerDidAnythingToStopAttack = true;
-      if (player.redKatana.parried)
-        playerParried = true;
-
-      // do nothing
-      if (playerParried) { }
-      else if (playerDidAnythingToStopAttack)
-        player.TakeDamage(silverKatana.damage / 2f);
-      else
-        player.TakeDamage(silverKatana.damage);
-
-      playerDidAnythingToStopAttack = false;
-      playerParried = false;
+      player.TakeDamage(silverKatana.damage);
       silverKatana.playerTouched = false;
     }
 
