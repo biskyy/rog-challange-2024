@@ -959,6 +959,24 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5016491127417049471, guid: e2de6dee72ffeef84b59a65a895b3038, type: 3}
   m_PrefabInstance: {fileID: 1503823203}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1306051294 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7599216345616024826, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
+  m_PrefabInstance: {fileID: 4015531750238669395}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1306051297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306051294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04eacbf8b7086504c83f6e6c49e0a249, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  katana: {fileID: 0}
 --- !u!1 &1375231791
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,6 +2036,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: KatanaTrail
       objectReference: {fileID: 0}
+    - target: {fileID: 5131137393990189565, guid: f3feaa9c01df5be49a02d21c93755cac, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5131137393990189565, guid: f3feaa9c01df5be49a02d21c93755cac, type: 3}
+      propertyPath: autoRandomSeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8088311213853258791, guid: f3feaa9c01df5be49a02d21c93755cac, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.73504245
@@ -2070,6 +2096,11 @@ PrefabInstance:
 --- !u!4 &2069988427 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8088311213853258791, guid: f3feaa9c01df5be49a02d21c93755cac, type: 3}
+  m_PrefabInstance: {fileID: 2069988426}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &2069988429 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5131137393990189565, guid: f3feaa9c01df5be49a02d21c93755cac, type: 3}
   m_PrefabInstance: {fileID: 2069988426}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2130389783
@@ -2326,6 +2357,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 660673666446371902, guid: 4584e31a9054c294f9caf17e3e912d6c, type: 3}
+      propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2940731649135277429, guid: 4584e31a9054c294f9caf17e3e912d6c, type: 3}
       propertyPath: m_Name
       value: Enemy
@@ -2418,6 +2453,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 784064476}
     - target: {fileID: 3629044828990453896, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
+      propertyPath: trailVFX
+      value: 
+      objectReference: {fileID: 2069988429}
+    - target: {fileID: 3629044828990453896, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
       propertyPath: currentPTW
       value: 
       objectReference: {fileID: 2134662064}
@@ -2484,6 +2523,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2069988427}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7599216345616024826, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1306051297}
     - targetCorrespondingSourceObject: {fileID: 8990947884689940835, guid: fdd29f9eb713be190a962c2dc57876cc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1583315133}
