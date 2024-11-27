@@ -61,7 +61,7 @@ public class LevelManager : MonoBehaviour
 
   public void ShowSettings()
   {
-    if (SceneManager.GetActiveScene().name == "MainMenu")
+    if (mainMenuUIToggle)
     {
       var canvasGroup = mainMenuUIToggle.GetComponent<CanvasGroup>();
       canvasGroup.alpha = 0;
@@ -72,7 +72,7 @@ public class LevelManager : MonoBehaviour
 
   public void CloseSettings()
   {
-    if (SceneManager.GetActiveScene().name == "MainMenu")
+    if (mainMenuUIToggle)
     {
       var canvasGroup = mainMenuUIToggle.GetComponent<CanvasGroup>();
       canvasGroup.alpha = 1;

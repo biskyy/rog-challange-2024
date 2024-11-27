@@ -10,13 +10,24 @@ public class CameraHandler : MonoBehaviour
   public Transform yOrientation;
   public float sensitivity = 100f;
 
+  public PauseMenu pauseMenu;
+
   // Start is called before the first frame update
   void Start()
   {
+    cam = GetComponentInChildren<Camera>();
+  }
+
+  private void LockCursor()
+  {
     Cursor.lockState = CursorLockMode.Locked;
     Cursor.visible = false;
+  }
 
-    cam = GetComponentInChildren<Camera>();
+  private void UnlockCursor()
+  {
+    Cursor.lockState = CursorLockMode.None;
+    Cursor.visible = true; ;
   }
 
   private float yRotation; // horizontal
@@ -25,6 +36,15 @@ public class CameraHandler : MonoBehaviour
   // update is called once per frame
   void Update()
   {
+    if (pauseMenu.gameIsPaused)
+    {
+      UnlockCursor();
+    }
+    else
+    {
+      LockCursor();
+    }
+
     float mouseX = Input.GetAxis("Mouse X") * Time.fixedDeltaTime * sensitivity;
     float mouseY = Input.GetAxis("Mouse Y") * Time.fixedDeltaTime * sensitivity;
 
