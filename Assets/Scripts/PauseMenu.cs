@@ -49,4 +49,11 @@ public class PauseMenu : MonoBehaviour
     Time.timeScale = 1f;
     gameIsPaused = false;
   }
+
+  public void ExitToMainMenu()
+  {
+    ResumeGame();
+    LevelManager.Instance.GoToScene("MainMenu");
+    gameIsPaused = true;
+  }
 }
