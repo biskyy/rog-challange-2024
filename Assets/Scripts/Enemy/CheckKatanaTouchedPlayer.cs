@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CheckKatanaTouchedPlayer : MonoBehaviour
 {
+  public EnemyAI owner;
   public SilverKatana silverKatana;
   public Player player;
 
@@ -12,6 +13,7 @@ public class CheckKatanaTouchedPlayer : MonoBehaviour
   void Start()
   {
     silverKatana = GetComponentInParent<SilverKatana>();
+    owner = GetComponentInParent<EnemyAI>();
   }
 
   // Update is called once per frame
@@ -34,7 +36,11 @@ public class CheckKatanaTouchedPlayer : MonoBehaviour
   {
     if (collider.tag == "player")
     {
-
+      if (!player.canTakeDamage)
+      {
+        owner.enemyKatanaAnimator.speed = 0f;
+        owner.GetStunned();
+      }
     }
   }
 

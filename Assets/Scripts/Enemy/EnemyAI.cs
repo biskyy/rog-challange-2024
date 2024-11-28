@@ -1,4 +1,5 @@
 ﻿
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,6 +12,7 @@ public class EnemyAI : MonoBehaviour
   public LayerMask whatIsGround, whatIsPlayer;
   public SilverKatana katana;
   public Animator enemyKatanaAnimator;
+  public bool stunned;
 
   [Header("Patroling")]
   public Vector3 walkPoint;
@@ -49,9 +51,9 @@ public class EnemyAI : MonoBehaviour
       playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
       playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-      if (!playerInSightRange && !playerInAttackRange) Patroling();
-      if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-      if (playerInAttackRange && playerInSightRange) AttackPlayer();
+      if (!playerInSightRange && !playerInAttackRange && !stunned) Patroling();
+      if (playerInSightRange && !playerInAttackRange && !stunned) ChasePlayer();
+      if (playerInAttackRange && playerInSightRange && !agent.isStopped) AttackPlayer();
       transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
   }
@@ -133,6 +135,23 @@ public class EnemyAI : MonoBehaviour
       katana.TurnIntoRagdoll();
       player.AddHealth(20f);
     }
+  }
+
+  public void GetStunned()
+  {
+    agent.isStopped = false;
+    StartCoroutine(Stun());
+  }
+
+  private IEnumerator Stun()
+  {
+    yield return new WaitForSeconds(0.2f);
+    enemyKatanaAnimator.SetTrigger("stunned");
+    enemyKatanaAnimator.speed = 1f;
+    stunned = true;
+    yield return new WaitForSeconds(2f);
+    agent.isStopped = true;
+    stunned = false;
   }
 
   public void DestroyEnemy()
