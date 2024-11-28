@@ -49,6 +49,11 @@ public class CameraHandler : MonoBehaviour
     {
       UnlockCursor();
     }
+    if (!pauseMenu.gameIsPaused && !pauseMenu.gameOver) HandleInput();
+  }
+
+  private void HandleInput()
+  {
     float mouseX = Input.GetAxis("Mouse X") * Time.fixedDeltaTime * sensitivity;
     float mouseY = Input.GetAxis("Mouse Y") * Time.fixedDeltaTime * sensitivity;
 
