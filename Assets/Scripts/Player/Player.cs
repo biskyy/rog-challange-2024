@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
   public Canvas PrototypeHUD;
   public Canvas PlayerHUD;
 
+  public PauseMenu pauseMenu;
   // Start is called before the first frame update
   void Start()
   {
@@ -71,11 +72,16 @@ public class Player : MonoBehaviour
     else if (canTakeDamage && blocking)
       health -= damage / 2f;
     canTakeDamage = true;
+    if (health <= 0)
+      pauseMenu.GameOver();
   }
 
   public void AddHealth(float amount)
   {
-    health += amount;
+    if (health + amount < maxHealth)
+      health += amount;
+    else if (health + amount > maxHealth)
+      health = maxHealth;
   }
 
   public void RestoreHealth()
@@ -83,14 +89,21 @@ public class Player : MonoBehaviour
     health = maxHealth;
   }
 
-  public void GameOver()
+  public void Respawn()
   {
-    print("game over");
+    Time.timeScale = 1f;
+    pauseMenu.gameOver = false;
+    LevelManager.Instance.ReloadCurrentScene();
   }
 
   public void UpdatePlayerHUD()
   {
-    if (PrototypeHUD)
+    if (PlayerHUD)
+    {
+      PlayerHUDReference.Instance.healthSlider.value = health;
+      PlayerHUDReference.Instance.healthAmount.text = health.ToString() + " / " + maxHealth.ToString();
+    }
+    else if (PrototypeHUD)
     {
       PrototypeHUDReference.Instance.healthText.text = health.ToString();
       PrototypeHUDReference.Instance.velocityText.text = GetComponent<AverageVelocityForRb>().averageVelocity.ToString();

@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
 {
   public GameObject pauseObject;
+  public GameObject gameOverObject;
+
+  public bool gameOver;
   public bool gameIsPaused;
   // Start is called before the first frame update
   void Start()
@@ -15,22 +19,17 @@ public class PauseMenu : MonoBehaviour
   // Update is called once per frame
   void Update()
   {
-    if (Input.GetKeyDown(KeyCode.Escape))
+    if (Input.GetKeyDown(KeyCode.Escape) && !gameOver)
     {
       print("paused");
 
       if (gameIsPaused)
       {
-        pauseObject.SetActive(false);
-        LevelManager.Instance.CloseSettings();
-        Time.timeScale = 1f;
-        gameIsPaused = false;
+        ResumeGame();
       }
       else
       {
-        pauseObject.SetActive(true);
-        Time.timeScale = 0f;
-        gameIsPaused = true;
+        PauseGame();
       }
     }
   }
@@ -45,9 +44,10 @@ public class PauseMenu : MonoBehaviour
 
   public void PauseGame()
   {
-    pauseObject.SetActive(false);
-    Time.timeScale = 1f;
-    gameIsPaused = false;
+    pauseObject.SetActive(true);
+    print("hello");
+    // Time.timeScale = 0f;
+    gameIsPaused = true;
   }
 
   public void ExitToMainMenu()
@@ -55,5 +55,12 @@ public class PauseMenu : MonoBehaviour
     ResumeGame();
     LevelManager.Instance.GoToScene("MainMenu");
     gameIsPaused = true;
+  }
+
+  public void GameOver()
+  {
+    // Time.timeScale = 0f;
+    gameOver = true;
+    gameOverObject.SetActive(true);
   }
 }
