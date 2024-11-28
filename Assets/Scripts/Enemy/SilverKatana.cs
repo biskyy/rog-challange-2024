@@ -5,6 +5,7 @@ using UnityEngine;
 public class SilverKatana : MonoBehaviour
 {
   public Player player;
+  public GameObject bladeCollider;
   public bool playerTouched = false;
 
   public float damage = 20f;
@@ -32,6 +33,7 @@ public class SilverKatana : MonoBehaviour
       Destroy(transform.parent.parent.GetComponent<Animator>());
       transform.SetParent(null, true);
     }
+    bladeCollider.SetActive(false);
   }
 
   public void DestroyKatana()
