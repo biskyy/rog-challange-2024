@@ -72,6 +72,7 @@ public class Player : MonoBehaviour
     else if (canTakeDamage && blocking)
       health -= damage / 2f;
     canTakeDamage = true;
+    redKatana.modifiedParryTimeWindow = redKatana.intendedParryTimeWindow;
     if (health <= 0)
       pauseMenu.GameOver();
   }
