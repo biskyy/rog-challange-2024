@@ -13,6 +13,7 @@ public class EnemyAI : MonoBehaviour
   public SilverKatana katana;
   public Animator enemyKatanaAnimator;
   public bool stunned;
+  public ParticleSystem stunVFX;
 
   [Header("Patroling")]
   public Vector3 walkPoint;
@@ -51,9 +52,9 @@ public class EnemyAI : MonoBehaviour
       playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
       playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-      if (!playerInSightRange && !playerInAttackRange && !stunned) Patroling();
-      if (playerInSightRange && !playerInAttackRange && !stunned) ChasePlayer();
-      if (playerInAttackRange && playerInSightRange && !agent.isStopped) AttackPlayer();
+      if (!playerInSightRange && !playerInAttackRange) Patroling();
+      if (playerInSightRange && !playerInAttackRange) ChasePlayer();
+      if (playerInAttackRange && playerInSightRange && !stunned) AttackPlayer();
       transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
   }
@@ -128,6 +129,7 @@ public class EnemyAI : MonoBehaviour
       isDead = true;
       gameObject.GetComponent<Rigidbody>().freezeRotation = false;
       gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+      gameObject.GetComponent<Rigidbody>().mass = 5f;
       gameObject.GetComponent<Rigidbody>().AddForce(orientation.forward * -1 * 100f);
       Destroy(agent);
       Invoke(nameof(DestroyEnemy), destroyEnemyDelay);
@@ -139,7 +141,7 @@ public class EnemyAI : MonoBehaviour
 
   public void GetStunned()
   {
-    agent.isStopped = false;
+    agent.isStopped = true;
     StartCoroutine(Stun());
   }
 
@@ -149,9 +151,13 @@ public class EnemyAI : MonoBehaviour
     enemyKatanaAnimator.SetTrigger("stunned");
     enemyKatanaAnimator.speed = 1f;
     stunned = true;
-    yield return new WaitForSeconds(2f);
-    agent.isStopped = true;
+    stunVFX.Play();
+    yield return new WaitForSeconds(3f);
+    if (agent)
+      agent.isStopped = false;
     stunned = false;
+    stunVFX.Stop();
+    stunVFX.Clear();
   }
 
   public void DestroyEnemy()
