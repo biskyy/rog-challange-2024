@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
   public bool parrying = false;
   public bool blocking = false;
   public bool canTakeDamage = true;
+  private AudioSource hurtSFX;
 
   [Header("Movement")]
   public Movement movement;
@@ -32,6 +33,13 @@ public class Player : MonoBehaviour
   {
     movement = GetComponent<Movement>();
     redKatana = GetComponentInChildren<RedKatana>();
+    hurtSFX = GetComponent<AudioSource>();
+    SFXManager.Instance.RegisterAudioSource(hurtSFX);
+  }
+
+  private void OnDestroy()
+  {
+    SFXManager.Instance.DeregisterAudioSource(hurtSFX);
   }
 
   // Update is called once per frame
@@ -67,10 +75,13 @@ public class Player : MonoBehaviour
 
   public void TakeDamage(float damage)
   {
-    if (canTakeDamage && !blocking)
-      health -= damage;
-    else if (canTakeDamage && blocking)
-      health -= damage / 2f;
+    if (canTakeDamage)
+    {
+      hurtSFX.Play();
+      if (blocking)
+        health -= damage / 2f;
+      else health -= damage;
+    }
     canTakeDamage = true;
     redKatana.modifiedParryTimeWindow = redKatana.intendedParryTimeWindow;
     if (health <= 0)
