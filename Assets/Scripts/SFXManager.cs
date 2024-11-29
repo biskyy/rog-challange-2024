@@ -22,7 +22,7 @@ public class SFXManager : MonoBehaviour
 
   private void Update()
   {
-    SetGlobalVolume(Globals.Instance.soundEffectsVolume);
+    SetGlobalVolume(Globals.Instance.sfxVolume);
   }
 
   /// <summary>
