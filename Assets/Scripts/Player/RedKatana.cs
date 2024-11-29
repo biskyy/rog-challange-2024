@@ -17,17 +17,22 @@ public class RedKatana : MonoBehaviour
   public float originalParryResetTimer = 2f;
   public float parryResetTimer = 0f;
 
-  public GameObject bladeCollider;
+  public BoxCollider bladeCollider;
 
   public bool parried;
 
   public ParticleSystem parryVFX;
   public ParticleSystem trailVFX;
 
+  private AudioSource parrySFX;
+
   // Start is called before the first frame update
   void Start()
   {
     player = GetComponentInParent<Player>();
+    bladeCollider = GetComponentInChildren<BoxCollider>();
+    parrySFX = GetComponent<AudioSource>();
+    SFXManager.Instance.RegisterAudioSource(parrySFX);
     //Time.timeScale = 0.4f;
   }
 
@@ -41,6 +46,7 @@ public class RedKatana : MonoBehaviour
       || animator.GetNextAnimatorStateInfo(0).IsName("Drawed")
       || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1")
       || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack1End")
+      || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack2")
       ))
       StartParry();
     else if (Input.GetMouseButtonUp(1) && (animator.GetCurrentAnimatorStateInfo(0).IsName("Parry") || animator.GetNextAnimatorStateInfo(0).IsName("Parry")))
@@ -56,8 +62,17 @@ public class RedKatana : MonoBehaviour
 
   }
 
+  private void OnDestroy()
+  {
+    if (SFXManager.Instance != null)
+    {
+      SFXManager.Instance.DeregisterAudioSource(parrySFX);
+    }
+  }
+
   void StartParry()
   {
+    bladeCollider.enabled = true;
     parryResetTimer = originalParryResetTimer;
 
     //bladeCollider.SetActive(true);
@@ -70,6 +85,7 @@ public class RedKatana : MonoBehaviour
 
   void StopParry()
   {
+    bladeCollider.enabled = false;
     //bladeCollider.SetActive(false);
     player.blocking = false;
     animator.SetBool("parrying", false);
@@ -98,11 +114,12 @@ public class RedKatana : MonoBehaviour
 
       if (enemyKatanaTouched)
       {
+        parrySFX.Play();
         modifiedParryTimeWindow = intendedParryTimeWindow;
         parryResetTimer = 0f;
         currentParryTimeWindow = 0f;
 
-        print("parried");
+        //print("parried");
         player.canTakeDamage = false;
 
         parryVFX.Clear();
