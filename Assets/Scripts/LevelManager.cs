@@ -23,7 +23,7 @@ public class LevelManager : MonoBehaviour
     }
 
     Instance = this;
-    // DontDestroyOnLoad(gameObject); // Persist through scenes
+    //DontDestroyOnLoad(gameObject); // Persist through scenes
   }
 
   public void GoToScene(string sceneName)
