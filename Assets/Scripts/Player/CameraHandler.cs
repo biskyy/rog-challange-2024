@@ -8,6 +8,7 @@ public class CameraHandler : MonoBehaviour
   public Camera cam;
   public Transform orientation;
   public Transform yOrientation;
+  public float sensitivityMultiplier = 1.0f;
   public float sensitivity = 100f;
 
   public PauseMenu pauseMenu;
@@ -50,12 +51,13 @@ public class CameraHandler : MonoBehaviour
       UnlockCursor();
     }
     if (!pauseMenu.gameIsPaused && !pauseMenu.gameOver) HandleInput();
+    sensitivityMultiplier = Globals.Instance.sensitivityMultiplier;
   }
 
   private void HandleInput()
   {
-    float mouseX = Input.GetAxis("Mouse X") * Time.fixedDeltaTime * sensitivity;
-    float mouseY = Input.GetAxis("Mouse Y") * Time.fixedDeltaTime * sensitivity;
+    float mouseX = Input.GetAxis("Mouse X") * Time.fixedDeltaTime * sensitivity * sensitivityMultiplier;
+    float mouseY = Input.GetAxis("Mouse Y") * Time.fixedDeltaTime * sensitivity * sensitivityMultiplier;
 
     yRotation += mouseX;
     xRotation -= mouseY;
