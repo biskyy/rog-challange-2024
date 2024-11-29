@@ -27,8 +27,10 @@ public class SettingsHandler : MonoBehaviour
     {
       inputFields[0].text = Globals.Instance.sensitivityMultiplier.ToString();
       inputFields[1].text = Globals.Instance.musicVolume.ToString();
+      inputFields[2].text = Globals.Instance.sfxVolume.ToString();
       AssignAction(inputFields[0], value => Globals.Instance.sensitivityMultiplier = value);
       AssignAction(inputFields[1], value => Globals.Instance.musicVolume = value);
+      AssignAction(inputFields[2], value => Globals.Instance.sfxVolume = value);
     }
   }
 
