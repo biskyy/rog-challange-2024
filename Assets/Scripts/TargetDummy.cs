@@ -41,6 +41,7 @@ public class TargetDummy : MonoBehaviour
 
   public void GetStunned()
   {
+    enemyKatanaAnimator.speed = 0f;
     StartCoroutine(Stun());
   }
 
