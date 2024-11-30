@@ -37,7 +37,7 @@ public class CheckKatanaTouchedEnemy : MonoBehaviour
   {
     if (collider.tag == "enemy")
     {
-      print(collider.name);
+      //print(collider.name);
       if (enemy != null)
       {
         enemy.TakeDamage(20f);
