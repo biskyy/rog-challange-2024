@@ -1,5 +1,6 @@
 ﻿
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -14,6 +15,7 @@ public class EnemyAI : MonoBehaviour
   public Animator enemyKatanaAnimator;
   public bool stunned;
   public ParticleSystem stunVFX;
+  public bool lockOrientationY;
 
   [Header("Patroling")]
   public Vector3 walkPoint;
@@ -25,6 +27,8 @@ public class EnemyAI : MonoBehaviour
   public float timeBetweenAttacks;
   public float sightRange, attackRange;
   bool alreadyAttacked;
+  public bool useGroundAttack;
+  public bool useTornadoAttack;
 
   [Header("States")]
   public bool playerInSightRange;
@@ -36,6 +40,7 @@ public class EnemyAI : MonoBehaviour
   public Player player;
   private Transform playerCamPosition;
   public ParticleSystem bloodVFX;
+  private AudioSource hurtSFX;
 
   private void Awake()
   {
@@ -44,9 +49,20 @@ public class EnemyAI : MonoBehaviour
     playerCamPosition = player.GetComponent<PositionSyncer>().cameraPosition;
   }
 
+  private void Start()
+  {
+    hurtSFX = GetComponent<AudioSource>();
+    SFXManager.Instance.RegisterAudioSource(hurtSFX);
+  }
+
+  private void OnDestroy()
+  {
+    SFXManager.Instance.DeregisterAudioSource(hurtSFX);
+  }
+
   private void Update()
   {
-    if (!isDead)
+    if (!isDead && !stunned)
     {
       //Check for sight and attack range
       playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
@@ -54,7 +70,7 @@ public class EnemyAI : MonoBehaviour
 
       if (!playerInSightRange && !playerInAttackRange) Patroling();
       if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-      if (playerInAttackRange && playerInSightRange && !stunned) AttackPlayer();
+      if (playerInAttackRange && playerInSightRange) AttackPlayer();
       transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
     }
   }
@@ -98,26 +114,42 @@ public class EnemyAI : MonoBehaviour
 
   private void AttackPlayer()
   {
-    //Make sure enemy doesn't move
     agent.isStopped = true;
-
-    orientation.LookAt(playerCamPosition.position);
+    if (lockOrientationY) orientation.localRotation = Quaternion.Euler(0, orientation.rotation.y, 0);
+    else
+      orientation.LookAt(playerCamPosition.position);
 
     if (!alreadyAttacked)
     {
+      int attack = Random.Range(0, 3);
       ///Attack code here
-
-      enemyKatanaAnimator.SetTrigger("attacked");
-
+      if (attack == 0 && !(useGroundAttack && useTornadoAttack))
+      {
+        alreadyAttacked = true;
+        Invoke(nameof(ResetAttack), timeBetweenAttacks);
+        enemyKatanaAnimator.SetTrigger("attacked");
+      }
+      else if (attack == 1 && useGroundAttack)
+      {
+        alreadyAttacked = true;
+        Invoke(nameof(ResetAttack), timeBetweenAttacks + 2f);
+        enemyKatanaAnimator.SetTrigger("groundAttack");
+      }
+      else if (attack == 2 && useTornadoAttack)
+      {
+        enemyKatanaAnimator.SetTrigger("tornadoAttack");
+        lockOrientationY = true;
+        alreadyAttacked = true;
+        Invoke(nameof(ResetAttack), timeBetweenAttacks + 4f);
+      }
       ///End of attack code
 
-      alreadyAttacked = true;
-      Invoke(nameof(ResetAttack), timeBetweenAttacks);
     }
   }
   private void ResetAttack()
   {
     alreadyAttacked = false;
+    lockOrientationY = false;
   }
 
   public void TakeDamage(float damage)
@@ -127,6 +159,8 @@ public class EnemyAI : MonoBehaviour
     if (health == 0)
     {
       isDead = true;
+      hurtSFX.Play();
+      gameObject.AddComponent<Rigidbody>();
       gameObject.GetComponent<Rigidbody>().freezeRotation = false;
       gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
       gameObject.GetComponent<Rigidbody>().mass = 5f;
@@ -141,15 +175,23 @@ public class EnemyAI : MonoBehaviour
 
   public void GetStunned()
   {
-    agent.isStopped = true;
-    StartCoroutine(Stun());
+    StartCoroutine(pauseAnimation());
+    if (!enemyKatanaAnimator.GetCurrentAnimatorStateInfo(0).IsName("GroundAttack"))
+    {
+      agent.isStopped = true;
+      StartCoroutine(Stun());
+    }
+  }
+
+  private IEnumerator pauseAnimation()
+  {
+    enemyKatanaAnimator.speed = 0f;
+    yield return new WaitForSeconds(0.2f);
+    enemyKatanaAnimator.speed = 1f;
   }
 
   private IEnumerator Stun()
   {
-    yield return new WaitForSeconds(0.2f);
-    enemyKatanaAnimator.SetTrigger("stunned");
-    enemyKatanaAnimator.speed = 1f;
     stunned = true;
     stunVFX.Play();
     yield return new WaitForSeconds(3f);
