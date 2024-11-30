@@ -9,6 +9,7 @@ public class CheckKatanaTouchedPlayer : MonoBehaviour
   public TargetDummy targetDummy;
   public SilverKatana silverKatana;
   public Player player;
+  public BoxCollider bladeCollider;
 
   // Start is called before the first frame update
   void Start()
@@ -16,6 +17,7 @@ public class CheckKatanaTouchedPlayer : MonoBehaviour
     silverKatana = GetComponentInParent<SilverKatana>();
     owner = GetComponentInParent<EnemyAI>();
     targetDummy = GetComponentInParent<TargetDummy>();
+    bladeCollider = GetComponent<BoxCollider>();
   }
 
   // Update is called once per frame
@@ -42,12 +44,10 @@ public class CheckKatanaTouchedPlayer : MonoBehaviour
       {
         if (owner)
         {
-          owner.enemyKatanaAnimator.speed = 0f;
           owner.GetStunned();
         }
         else if (targetDummy)
         {
-          targetDummy.enemyKatanaAnimator.speed = 0f;
           targetDummy.GetStunned();
         }
       }
@@ -59,10 +59,19 @@ public class CheckKatanaTouchedPlayer : MonoBehaviour
   {
     if (collider.tag == "player")
     {
-      if (!targetDummy)
       player.TakeDamage(silverKatana.damage);
       silverKatana.playerTouched = false;
     }
 
+  }
+
+  public void EnableCollider ()
+  {
+    bladeCollider.enabled = true;
+  }
+  
+  public void DisableCollider()
+  {
+    bladeCollider.enabled = false;
   }
 }
