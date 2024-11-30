@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 
   public GameObject mainMenuUIToggle;
   public Canvas settingsMenu;
+  public Canvas creditsMenu;
 
   [Header("Scene Names")]
   public string prototypeScene = "Prototype";
@@ -79,5 +80,27 @@ public class LevelManager : MonoBehaviour
       canvasGroup.interactable = true;
     }
     settingsMenu.gameObject.SetActive(false);
+  }
+
+  public void ShowCredits()
+  {
+    if(mainMenuUIToggle)
+    {
+      var canvasGroup = mainMenuUIToggle.GetComponent<CanvasGroup>();
+      canvasGroup.alpha = 0;
+      canvasGroup.interactable = false;
+    }
+    creditsMenu.gameObject.SetActive(true);
+  }
+
+  public void CloseCredits()
+  {
+    if (mainMenuUIToggle)
+    {
+      var canvasGroup = mainMenuUIToggle.GetComponent<CanvasGroup>();
+      canvasGroup.alpha = 1;
+      canvasGroup.interactable = true;
+    }
+    creditsMenu.gameObject.SetActive(false);
   }
 }
