@@ -24,15 +24,21 @@ public class RedKatana : MonoBehaviour
   public ParticleSystem parryVFX;
   public ParticleSystem trailVFX;
 
-  private AudioSource parrySFX;
+  public AudioSource[] SFXs;
 
   // Start is called before the first frame update
   void Start()
   {
     player = GetComponentInParent<Player>();
     bladeCollider = GetComponentInChildren<BoxCollider>();
-    parrySFX = GetComponent<AudioSource>();
-    SFXManager.Instance.RegisterAudioSource(parrySFX);
+    SFXs = GetComponents<AudioSource>();
+    foreach (var sfx in SFXs)
+    {
+      if (sfx != null)
+      {
+        SFXManager.Instance.RegisterAudioSource(sfx);
+      }
+    }
     //Time.timeScale = 0.4f;
   }
 
@@ -49,7 +55,9 @@ public class RedKatana : MonoBehaviour
       || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack2")
       ))
       StartParry();
-    else if (Input.GetMouseButtonUp(1) && (animator.GetCurrentAnimatorStateInfo(0).IsName("Parry") || animator.GetNextAnimatorStateInfo(0).IsName("Parry")))
+    if (Input.GetMouseButtonUp(1)
+      //&& (animator.GetCurrentAnimatorStateInfo(0).IsName("Parry") || animator.GetNextAnimatorStateInfo(0).IsName("Parry"))
+      )
       StopParry();
     if (Input.GetMouseButtonDown(0))
     {
@@ -66,7 +74,13 @@ public class RedKatana : MonoBehaviour
   {
     if (SFXManager.Instance != null)
     {
-      SFXManager.Instance.DeregisterAudioSource(parrySFX);
+      foreach (var sfx in SFXs)
+      {
+        if (sfx != null)
+        {
+          SFXManager.Instance.DeregisterAudioSource(sfx);
+        }
+      }
     }
   }
 
@@ -114,7 +128,7 @@ public class RedKatana : MonoBehaviour
 
       if (enemyKatanaTouched)
       {
-        parrySFX.Play();
+        SFXs[0].Play();
         modifiedParryTimeWindow = intendedParryTimeWindow;
         parryResetTimer = 0f;
         currentParryTimeWindow = 0f;

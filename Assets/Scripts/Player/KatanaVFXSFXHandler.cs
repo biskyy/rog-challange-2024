@@ -36,4 +36,13 @@ public class KatanaVFXSFXHandler : MonoBehaviour
   {
     katana.bladeCollider.enabled = false;
   }
+
+  public void PlaySwordSFX1()
+  {
+    katana.SFXs[1].Play();
+  }
+
+  public void PlaySwordSFX2() {
+    katana.SFXs[2].Play();
+  }
 }
