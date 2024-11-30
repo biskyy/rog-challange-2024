@@ -46,7 +46,7 @@ public class CameraHandler : MonoBehaviour
       LockCursor();
     }
 
-    if (pauseMenu.gameOver)
+    if (pauseMenu.gameOver || Globals.Instance.victory)
     {
       UnlockCursor();
     }
