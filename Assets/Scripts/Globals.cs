@@ -9,7 +9,8 @@ public class Globals : MonoBehaviour
 
   public float sensitivityMultiplier = 1.0f;
   public float musicVolume = 0.25f;
-  public float soundEffectsVolume = 0.25f;
+  public float sfxVolume = 0.25f;
+  public bool victory = false;
 
   private void Awake()
   {
