@@ -4,30 +4,41 @@ using UnityEngine;
 
 public class RotationClamper : MonoBehaviour
 {
+    public float minClamp;
+    public float maxClamp;
 
-  public float minClamp;
-  public float maxClamp;
+    public bool x;
+    public bool y;
+    public bool z;
 
-  public bool x;
-  public bool y;
-  public bool z;
+    // Update is called once per frame
+    void Update()
+    {
+        Vector3 clampedEuler = transform.localEulerAngles;
 
+        // Convert angles greater than 180 to negative values for proper clamping
+        clampedEuler.x = NormalizeAngle(clampedEuler.x);
+        clampedEuler.y = NormalizeAngle(clampedEuler.y);
+        clampedEuler.z = NormalizeAngle(clampedEuler.z);
 
+        // Clamp the axes as specified
+        if (x)
+            clampedEuler.x = Mathf.Clamp(clampedEuler.x, minClamp, maxClamp);
+        if (y)
+            clampedEuler.y = Mathf.Clamp(clampedEuler.y, minClamp, maxClamp);
+        if (z)
+            clampedEuler.z = Mathf.Clamp(clampedEuler.z, minClamp, maxClamp);
 
-  // Start is called before the first frame update
-  void Start()
-  {
+        // Apply the clamped rotation
+        transform.localEulerAngles = clampedEuler;
+    }
 
-  }
-
-  // Update is called once per frame
-  void Update()
-  {
-    if (x)
-      transform.localRotation = Quaternion.Euler(Mathf.Clamp(transform.rotation.x, minClamp, maxClamp), transform.rotation.y, transform.rotation.z);
-    else if (y)
-      transform.localRotation = Quaternion.Euler(transform.rotation.x, Mathf.Clamp(transform.rotation.y, minClamp, maxClamp), transform.rotation.z);
-    else if (z)
-      transform.localRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, Mathf.Clamp(transform.rotation.z, minClamp, maxClamp));
-  }
+    // Normalize angle to range [-180, 180]
+    float NormalizeAngle(float angle)
+    {
+        angle = angle % 360;
+        if (angle > 180)
+            angle -= 360;
+        return angle;
+    }
 }
